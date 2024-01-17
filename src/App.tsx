@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Vendor
+import { ConfigProvider, Dropdown } from "antd";
+import { ProLayout } from "@ant-design/pro-components";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { NavLink, useLocation } from "react-router-dom";
+
+// Src
+import './App.css';
+import { defaultMenuItems } from "./utils/menu.tsx";
+import AppRoutes from "./routes/AppRoutes.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { pathname } = useLocation();
 
   return (
-    <>
-      <div className="bg-red-400">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ConfigProvider>
+      <ProLayout
+        title="WAREHOUSE MANAGEMENT"
+        fixSiderbar
+        layout="mix"
+        location={{ pathname }}
+        avatarProps={{
+          icon: <UserOutlined />,
+          size: 'large',
+          render: (_, dom) => (
+            <Dropdown
+              menu={{
+                items: [{
+                  key: 'logout',
+                  icon: <LogoutOutlined />,
+                  label: 'Logout',
+                  onClick: () => {
+                    window.localStorage.clear();
+                    window.location.reload();
+                  }
+                }]
+              }}
+              children={dom}
+            />
+          )
+        }}
+        menu={{
+          request: async () => defaultMenuItems
+        }}
+        menuItemRender={(menuItem, dom) => (
+          <NavLink to={menuItem.path ?? ''}
+            children={dom}
+          />
+        )}
+      >
+        <AppRoutes />
+      </ProLayout>
+    </ConfigProvider>
+  );
 }
 
-export default App
+export default App;
