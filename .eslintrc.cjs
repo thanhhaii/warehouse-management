@@ -24,7 +24,7 @@ module.exports = {
         destructuredArrayIgnorePattern: "^_"
       }
     ],
-    '@typescript-eslint/indent': ['warn', 2],
+    '@typescript-eslint/indent': ['warn', 4],
     '@typescript-eslint/semi': 'warn',
     '@typescript-eslint/no-explicit-any': 'off',
     'object-curly-spacing': ['warn', 'always']

@@ -1,22 +1,24 @@
 import { Route, Routes } from "react-router-dom";
+import AccountPage from "../views/AccountPage.tsx";
+import ProductPage from "../views/ProductPage.tsx";
 
 const AppRoutes: React.FunctionComponent = () => {
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={<h1>Path /</h1>}
-      />
-      <Route
-        path="account"
-        element={<h1>Account /</h1>}
-      />
-      <Route
-        path="product"
-        element={<h1>Product /</h1>}
-      />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route
+                path="/"
+                element={<h1>Path /</h1>}
+            />
+            <Route
+                path="account"
+                element={<AccountPage />}
+            />
+            <Route
+                path="product"
+                element={<ProductPage />}
+            />
+        </Routes>
+    );
 };
 
 export default AppRoutes;
