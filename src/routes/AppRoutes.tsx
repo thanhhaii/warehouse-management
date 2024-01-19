@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import AccountPage from "../views/AccountPage.tsx";
+import AccountPage from "../views/Account/AccountPage.tsx";
 import ProductPage from "../views/ProductPage.tsx";
 
 const AppRoutes: React.FunctionComponent = () => {

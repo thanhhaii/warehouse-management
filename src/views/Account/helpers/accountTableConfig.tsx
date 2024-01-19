@@ -1,5 +1,5 @@
 import { ProColumns } from "@ant-design/pro-components";
-import { AccountModel } from "../types/accountModels.ts";
+import { AccountModel } from "../../../types/accountModels.ts";
 
 export const accountTableConfig: ProColumns<AccountModel>[] = [
     {

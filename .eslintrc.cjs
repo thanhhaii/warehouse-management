@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/indent': ['warn', 4],
     '@typescript-eslint/semi': 'warn',
     '@typescript-eslint/no-explicit-any': 'off',
+    'react-hooks/exhaustive-deps': 'off',
     'object-curly-spacing': ['warn', 'always']
   }
 }
