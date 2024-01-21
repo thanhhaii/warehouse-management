@@ -5,11 +5,12 @@ export const accountTableConfig: ProColumns<AccountModel>[] = [
     {
         title: 'STT',
         valueType: 'index',
-        align: 'center'
+        align: 'center',
     },
     {
         title: 'ID',
-        dataIndex: 'id'
+        dataIndex: 'id',
+        copyable: true
     },
     {
         title: 'Họ và tên',
@@ -18,6 +19,7 @@ export const accountTableConfig: ProColumns<AccountModel>[] = [
     {
         title: 'Điện thoại',
         dataIndex: 'phone',
+        align: 'center'
     },
     {
         title: 'Căn cước công dân',
@@ -29,6 +31,7 @@ export const accountTableConfig: ProColumns<AccountModel>[] = [
     },
     {
         title: 'Vai trò',
-        dataIndex: 'role'
+        dataIndex: 'role',
+        align: 'center'
     }
 ];

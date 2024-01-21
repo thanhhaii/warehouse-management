@@ -5,5 +5,5 @@ export type AccountModel = {
     individualCard: string;
     email: string;
     role: string;
-    active: boolean;
+    active?: boolean;
 };
