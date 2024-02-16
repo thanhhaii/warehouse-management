@@ -3,18 +3,22 @@ import { ProCard, ProForm, ProFormText } from "@ant-design/pro-components";
 import { useCallback } from "react";
 import { LoginFormType } from "@/views/Login/types/loginModels.ts";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/states/hooks.ts";
+import { authActions } from "@/states/slices/authSlice.ts";
 
 const LoginPage: React.FunctionComponent = () => {
     const navigator = useNavigate();
+    const dispatch = useAppDispatch();
 
     // Handler
     const handleFinish = useCallback(async (value: LoginFormType) => {
         if(value.password === 'admin' && value.username === 'admin'){
+            dispatch(authActions.loginSuccess());
             navigator("/", {
                 replace: true
             });
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="h-dvh w-dvw">

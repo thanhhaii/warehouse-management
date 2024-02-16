@@ -6,6 +6,8 @@ import vi_VN from "antd/locale/vi_VN";
 import './App.css';
 import AppRoutes from "./routes/AppRoutes.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { store } from "@/states/configStore.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -19,11 +21,13 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ConfigProvider locale={vi_VN}>
-                <AppRoutes />
-            </ConfigProvider>
-        </QueryClientProvider>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <ConfigProvider locale={vi_VN}>
+                    <AppRoutes />
+                </ConfigProvider>
+            </QueryClientProvider>
+        </Provider>
     );
 }
 

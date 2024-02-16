@@ -15,7 +15,9 @@ const AppRoutes: React.FunctionComponent = () => {
             <Route element={<MainLayout />}>
                 <Route
                     path="/"
-                    element={<h1>Path /</h1>}
+                    element={
+                        <ProtectedRoute children={<h1>Path /</h1>} />
+                    }
                 />
                 <Route
                     path="account"
@@ -27,6 +29,24 @@ const AppRoutes: React.FunctionComponent = () => {
                     path="product"
                     element={
                         <ProtectedRoute children={<ProductPage />} />
+                    }
+                />
+                <Route
+                    path="provider"
+                    element={
+                        <ProtectedRoute children={<h1>Provider /</h1>} />
+                    }
+                />
+                <Route
+                    path="category"
+                    element={
+                        <ProtectedRoute children={<h1>Category /</h1>} />
+                    }
+                />
+                <Route
+                    path="invoice"
+                    element={
+                        <ProtectedRoute children={<h1>Invoice /</h1>} />
                     }
                 />
             </Route>

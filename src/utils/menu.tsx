@@ -1,16 +1,11 @@
 import { MenuDataItem } from "@ant-design/pro-components";
-import { DashboardOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, FileOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
 
 export const defaultMenuItems: MenuDataItem[] = [
     {
         name: 'Dashboard',
         icon: <DashboardOutlined />,
         path: `/`,
-    },
-    {
-        name: 'Tài khoản',
-        icon: <UserOutlined />,
-        path: `/account`,
     },
     {
         name: 'Sản phẩm',
@@ -29,5 +24,15 @@ export const defaultMenuItems: MenuDataItem[] = [
                 path: '/category',
             }
         ]
-    }
+    },
+    {
+        name: 'Hoá đơn',
+        icon: <FileTextOutlined />,
+        path: `/invoice`,
+    },
+    {
+        name: 'Tài khoản',
+        icon: <UserOutlined />,
+        path: `/account`,
+    },
 ];
