@@ -10,7 +10,18 @@ const typeEmail: Rule = {
     message: 'Email không đúng định dạng'
 };
 
+const passwordRule: Rule = {
+    validator: (_, value: string) => {
+        if(value?.toString()?.includes(" ")){
+            return Promise.reject(new Error("Mật khẩu không được chứa khoảng trắng"));
+        }
+
+        return Promise.resolve();
+    }
+};
+
 export const rulesHelper = {
     requiredRule,
-    typeEmail
+    typeEmail,
+    passwordRule
 };

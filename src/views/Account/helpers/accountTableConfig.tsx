@@ -1,5 +1,5 @@
 import { ProColumns } from "@ant-design/pro-components";
-import { AccountModel } from "../../../types/accountModels.ts";
+import { AccountModel, Role } from "@/types/accountModels.ts";
 
 export const accountTableConfig: ProColumns<AccountModel>[] = [
     {
@@ -8,13 +8,8 @@ export const accountTableConfig: ProColumns<AccountModel>[] = [
         align: 'center',
     },
     {
-        title: 'ID',
-        dataIndex: 'id',
-        copyable: true
-    },
-    {
         title: 'Họ và tên',
-        dataIndex: 'fullName'
+        dataIndex: 'fullName',
     },
     {
         title: 'Điện thoại',
@@ -31,7 +26,10 @@ export const accountTableConfig: ProColumns<AccountModel>[] = [
     },
     {
         title: 'Vai trò',
-        dataIndex: 'role',
-        align: 'center'
+        dataIndex: 'roles',
+        align: 'center',
+        renderText: (role: Role[]) => {
+            return role?.[0]?.role;
+        }
     }
 ];

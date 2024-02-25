@@ -9,7 +9,7 @@ export type AccountModel = {
     phone: string;
     individualCard: string;
     email: string;
-    role: Role[];
+    roles: Role[];
     active?: boolean;
     address: string;
 };
