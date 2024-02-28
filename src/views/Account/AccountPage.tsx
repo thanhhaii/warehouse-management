@@ -15,6 +15,7 @@ const AccountPage: React.FunctionComponent = () => {
 
     return (
         <ProTable
+            size="small"
             dataSource={accountQuery?.data ?? []}
             bordered
             rowKey="id"

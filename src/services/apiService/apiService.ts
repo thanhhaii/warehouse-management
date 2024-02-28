@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { GetAllUserRequest } from "@/services/apiService/requestTypes.ts";
 import { GetAllUserResponse } from "@/services/apiService/responseTypes.ts";
-import { CreateAccountModel } from "@/views/Account/models/accountFormModels.ts";
+import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
+import { AccountModel } from "@/types/accountModels.ts";
 
 interface APIServiceImpl {
     getUser: (request: GetAllUserRequest) => Promise<GetAllUserResponse>;
@@ -31,6 +32,13 @@ class ApiService implements APIServiceImpl{
     async createUser(payload: CreateAccountModel): Promise<AxiosResponse<string>> {
         return await this.axiosInstance?.post<string>(
             '/account/create',
+            payload
+        );
+    }
+
+    async updateUser(payload: UpdateAccountModel): Promise<AxiosResponse<AccountModel>> {
+        return await this.axiosInstance?.put<AccountModel>(
+            '/account/update',
             payload
         );
     }
