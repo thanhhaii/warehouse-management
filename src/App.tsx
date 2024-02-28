@@ -1,5 +1,5 @@
 // Vendor
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntdApp } from "antd";
 import vi_VN from "antd/locale/vi_VN";
 
 // Src
@@ -22,11 +22,13 @@ const queryClient = new QueryClient({
 function App() {
     return (
         <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <ConfigProvider locale={vi_VN}>
-                    <AppRoutes />
-                </ConfigProvider>
-            </QueryClientProvider>
+            <AntdApp>
+                <QueryClientProvider client={queryClient}>
+                    <ConfigProvider locale={vi_VN}>
+                        <AppRoutes />
+                    </ConfigProvider>
+                </QueryClientProvider>
+            </AntdApp>
         </Provider>
     );
 }

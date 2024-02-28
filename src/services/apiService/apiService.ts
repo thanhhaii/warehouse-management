@@ -42,6 +42,12 @@ class ApiService implements APIServiceImpl{
             payload
         );
     }
+
+    async deleteUser(accountId: number): Promise<AxiosResponse<string>> {
+        return await this.axiosInstance.delete<string>(
+            `/account/delete?id=${accountId}`,
+        );
+    }
 }
 
 const apiService = new ApiService();

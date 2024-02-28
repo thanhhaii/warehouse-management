@@ -4,7 +4,7 @@ export type Role = {
 };
 
 export type AccountModel = {
-    id: string;
+    id: number;
     fullName: string;
     phone: string;
     individualCard: string;

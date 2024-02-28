@@ -2,11 +2,13 @@
 import { ProTable } from "@ant-design/pro-components";
 
 // Src
-import { accountTableConfig } from "./helpers/accountTableConfig.tsx";
 import ModalConfigAccount from "@/views/Account/components/ModalConfigAccount/ModalConfigAccount.tsx";
 import useGetListAccountQuery from "@/views/Account/hooks/useGetListAccountQuery.ts";
+import useAccountColumns from "@/views/Account/hooks/useAccountColumns.tsx";
 
 const AccountPage: React.FunctionComponent = () => {
+    const columns = useAccountColumns();
+
     // Hooks
     const accountQuery = useGetListAccountQuery({
         pageNumber: 0,
@@ -19,7 +21,7 @@ const AccountPage: React.FunctionComponent = () => {
             dataSource={accountQuery?.data ?? []}
             bordered
             rowKey="id"
-            columns={accountTableConfig}
+            columns={columns}
             search={{
                 labelWidth: 'auto'
             }}
