@@ -17,33 +17,59 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
         {
             title: 'Họ và tên',
             dataIndex: 'fullName',
+            formItemProps: {
+                name: 'searchFullName'
+            }
         },
         {
             title: 'Điện thoại',
             dataIndex: 'phone',
-            align: 'center'
+            align: 'center',
+            formItemProps: {
+                name: 'searchPhone'
+            }
         },
         {
             title: 'Căn cước công dân',
-            dataIndex: 'individualCard'
+            dataIndex: 'individualCard',
+            search: false
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'address',
+            formItemProps: {
+                name: 'searchAddress'
+            }
         },
         {
             title: 'Email',
             dataIndex: 'email',
+            formItemProps: {
+                name: 'searchEmail'
+            }
         },
         {
             title: 'Vai trò',
             dataIndex: 'roles',
             align: 'center',
+            valueType: 'select',
+            formItemProps: {
+                name: 'searchRole',
+            },
+            valueEnum: {
+                ADMIN_ROLE: {
+                    text: 'ADMIN_ROLE'
+                },
+                STAFF_ROLE: {
+                    text: 'STAFF_ROLE'
+                }
+            },
             renderText: (role: Role[]) => {
                 return role?.[0]?.role;
             }
         },
         {
+            search: false,
             title: 'Hành động',
             align: 'center',
             render: (_, entity) => {
