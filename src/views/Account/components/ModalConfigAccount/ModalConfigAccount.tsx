@@ -83,6 +83,9 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
             loading={isLoading}
             open={open}
             onOpenChange={setOpen}
+            initialValues={{
+                roles: AccountRole.STAFF_ROLE
+            }}
             trigger={
                 data ?
                     <Button
@@ -115,18 +118,6 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
                 label="Họ và tên"
                 required
                 rules={[rulesHelper.requiredRule]}
-                colProps={{ span: 12 }}
-            />
-            <ProFormText.Password
-                disabled={!!data}
-                name="password"
-                placeholder="Mật khẩu"
-                label="Mật khẩu"
-                required
-                rules={[{
-                    ...rulesHelper.requiredRule,
-                    required: !data,
-                }, rulesHelper.passwordRule]}
                 colProps={{ span: 12 }}
             />
             <ProFormText

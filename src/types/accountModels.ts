@@ -12,4 +12,5 @@ export type AccountModel = {
     roles: Role[];
     active?: boolean;
     address: string;
+    password: string;
 };
