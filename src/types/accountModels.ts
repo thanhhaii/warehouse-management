@@ -4,7 +4,7 @@ export type Role = {
 };
 
 export type AccountModel = {
-    id: string;
+    id: number;
     fullName: string;
     phone: string;
     individualCard: string;
@@ -12,4 +12,5 @@ export type AccountModel = {
     roles: Role[];
     active?: boolean;
     address: string;
+    password: string;
 };

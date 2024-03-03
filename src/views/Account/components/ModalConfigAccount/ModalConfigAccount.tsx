@@ -1,7 +1,7 @@
 // Vendor
 import { ModalForm, ProForm, ProFormSelect, ProFormText } from "@ant-design/pro-components";
 import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { rulesHelper } from "@/helpers/formRulesHelper.ts";
 import { useCallback, useEffect, useState } from "react";
 
@@ -9,12 +9,17 @@ import { useCallback, useEffect, useState } from "react";
 import { AccountFormModels, CreateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { defaultOptionsRole, dictRoleEnumToRoleData } from "@/views/Account/helpers/accountOptions.ts";
 import usePostCreateAccountMutation from "@/views/Account/hooks/usePostCreateAccountMutation.ts";
+import { AccountRole } from "@/enums/accountEnums.ts";
+import { AccountModel } from "@/types/accountModels.ts";
+import usePutUpdateAccountMutation from "@/views/Account/hooks/usePutUpdateAccountMutation.ts";
 
 export type ModalConfigAccountProps = {
-    data?: any
+    data?: AccountModel
 };
 
-const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
+const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
+    data
+}) => {
     // States
     const [open, setOpen] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -22,20 +27,29 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
     // Hooks
     const [form] = ProForm.useForm<AccountFormModels>();
     const createAccountMutation = usePostCreateAccountMutation();
+    const updateAccountMutation = usePutUpdateAccountMutation();
 
     // Handler
     const handleFinish = useCallback(async (value: AccountFormModels)=> {
+        setLoading(true);
         try {
-            setLoading(true);
             const payload: CreateAccountModel = {
                 ...value,
                 roles: [dictRoleEnumToRoleData[value.roles]]
             };
-            await createAccountMutation.mutateAsync(payload);
+            if(!data){
+                await createAccountMutation.mutateAsync(payload);
+            } else {
+                await updateAccountMutation.mutateAsync({
+                    ...data,
+                    ...payload,
+                    id: data.id
+                });
+            }
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [data]);
 
     // Effect
     useEffect(() => {
@@ -43,10 +57,23 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
     }, []);
 
     useEffect(() => {
-        if(createAccountMutation.status === 'success'){
+        if(open && data){
+            form.setFieldsValue({
+                address: data.address,
+                roles: data.roles[0]?.id,
+                email: data.email,
+                fullName: data.fullName,
+                phone: data.phone,
+                individualCard: data.individualCard,
+            });
+        }
+    }, [open]);
+
+    useEffect(() => {
+        if(createAccountMutation.status === 'success' || updateAccountMutation.status === 'success'){
             setOpen(false);
         }
-    }, [createAccountMutation.status]);
+    }, [createAccountMutation.status, updateAccountMutation.status]);
 
     return (
         <ModalForm
@@ -56,19 +83,28 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
             loading={isLoading}
             open={open}
             onOpenChange={setOpen}
+            initialValues={{
+                roles: AccountRole.STAFF_ROLE
+            }}
             trigger={
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined /> }
-                    children="Tạo tài khoản"
-                />
+                data ?
+                    <Button
+                        type="primary"
+                        icon={<EditOutlined /> }
+                        ghost
+                    />
+                    : <Button
+                        type="primary"
+                        icon={<PlusOutlined /> }
+                        children="Tạo tài khoản"
+                    />
             }
             submitter={{
                 searchConfig: {
-                    submitText: 'Tạo tài khoản'
+                    submitText: data ? 'Cập nhật tài khoản' : 'Tạo tài khoản'
                 }
             }}
-            title="Tạo tài khoản mới"
+            title={data ? "Cập nhật tài khoản" : "Tạo tài khoản mới"}
             form={form}
             grid
             onFinish={handleFinish}
@@ -82,14 +118,6 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
                 label="Họ và tên"
                 required
                 rules={[rulesHelper.requiredRule]}
-                colProps={{ span: 12 }}
-            />
-            <ProFormText.Password
-                name="password"
-                placeholder="Mật khẩu"
-                label="Mật khẩu"
-                required
-                rules={[rulesHelper.requiredRule, rulesHelper.passwordRule]}
                 colProps={{ span: 12 }}
             />
             <ProFormText
@@ -125,10 +153,10 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = () => {
                 colProps={{ span: 12 }}
             />
             <ProFormSelect
-                name="role"
+                name="roles"
                 placeholder="Vai trò"
                 label="Vai trò"
-                valueEnum={undefined}
+                valueEnum={AccountRole}
                 options={defaultOptionsRole}
                 required
                 rules={[rulesHelper.requiredRule]}

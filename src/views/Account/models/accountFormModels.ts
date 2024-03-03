@@ -4,4 +4,5 @@ import { AccountRole } from "@/enums/accountEnums.ts";
 export type AccountFormModels = Omit<AccountModel, 'id' | 'roles'> & {
     roles: AccountRole
 };
-export type CreateAccountModel = Omit<AccountModel, 'id'>;
+export type CreateAccountModel = Omit<AccountModel, 'id' | 'password'>;
+export type UpdateAccountModel = Omit<AccountModel, 'password'>;
