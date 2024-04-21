@@ -1,17 +1,24 @@
+// Vendor
 import { Col, Row } from "antd";
 import { ProCard, ProForm, ProFormText } from "@ant-design/pro-components";
 import { useCallback } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+
+// Src
 import { LoginFormType } from "@/views/Login/types/loginModels.ts";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "@/states/hooks.ts";
+import { useAppDispatch, useAppSelector } from "@/states/hooks.ts";
 import { authActions } from "@/states/slices/authSlice.ts";
+import { selectUserIsSignedIn } from "@/states/selectors/authSelector";
 
 const LoginPage: React.FunctionComponent = () => {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
+    const isLogin = useAppSelector(selectUserIsSignedIn);
+    console.log('1');
 
     // Handler
     const handleFinish = useCallback(async (value: LoginFormType) => {
+        {console.log('4');}
         if(value.password === 'admin' && value.username === 'admin'){
             dispatch(authActions.loginSuccess());
             navigator("/", {
@@ -19,6 +26,10 @@ const LoginPage: React.FunctionComponent = () => {
             });
         }
     }, [dispatch]);
+
+    if(isLogin){
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <div className="h-dvh w-dvw">

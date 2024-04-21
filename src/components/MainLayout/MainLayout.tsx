@@ -1,11 +1,12 @@
 // Vendor
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { Dropdown } from "antd";
+import { Breadcrumb, Dropdown } from "antd";
 import { NavLink, useLocation, Outlet } from "react-router-dom";
 import { ProLayout } from "@ant-design/pro-components";
 
 // Src
 import { defaultMenuItems } from "@/utils/menu.tsx";
+import AppBreadcrumb from "../AppBreadcrumb/AppBreadcrumb";
 
 const MainLayout: React.FunctionComponent = () => {
     const { pathname } = useLocation();
@@ -45,6 +46,7 @@ const MainLayout: React.FunctionComponent = () => {
                 />
             )}
         >
+            <AppBreadcrumb />
             <Outlet />
         </ProLayout>
     );

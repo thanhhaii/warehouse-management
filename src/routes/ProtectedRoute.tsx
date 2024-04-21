@@ -1,6 +1,6 @@
 // Vendor
 import { Navigate, useLocation } from "react-router-dom";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 
 // Src
 import { useAppSelector } from "@/states/hooks.ts";
@@ -16,7 +16,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         return <Navigate to="/login" replace={true} state={{ from: location }} />;
     }
 
-    return children;
+    return (
+        <Suspense fallback={<h1>Loading</h1>}>
+            {children}
+        </Suspense>
+    );
 };
 
 export default ProtectedRoute;
