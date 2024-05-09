@@ -2,7 +2,7 @@ import { AuthState } from "@/states/types.ts";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialValue: AuthState = {
-    isSignedIn: false
+    isSignedIn: true
 };
 
 const authSlice = createSlice({

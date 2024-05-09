@@ -4,6 +4,10 @@ import ProductPage from "../views/ProductPage.tsx";
 import MainLayout from "@/components/MainLayout/MainLayout.tsx";
 import LoginPage from "@/views/Login/LoginPage.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
+import { lazy } from "react";
+
+const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
+const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPage.tsx"));
 
 const AppRoutes: React.FunctionComponent = () => {
     return (
@@ -34,7 +38,13 @@ const AppRoutes: React.FunctionComponent = () => {
                 <Route
                     path="provider"
                     element={
-                        <ProtectedRoute children={<h1>Provider /</h1>} />
+                        <ProtectedRoute children={<ProviderPage />} />
+                    }
+                />
+                <Route
+                    path="provider/:id/:action?"
+                    element={
+                        <ProtectedRoute children={<ProviderDetailPage />} />
                     }
                 />
                 <Route
