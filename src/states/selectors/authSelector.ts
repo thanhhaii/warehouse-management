@@ -1,9 +1,11 @@
-import { AppState } from "@/states/types.ts";
 import { createSelector } from "@reduxjs/toolkit";
+import { IRootState } from "../rootReducer";
 
-const getAuthReducer = (appStates: AppState) => appStates.auth;
+const getAuthReducer = (appStates: IRootState) => appStates.authReducer;
 
 export const selectUserIsSignedIn = createSelector(
     getAuthReducer,
-    (state) => state.isSignedIn
+    (state) => {        
+        return state.isSignedIn;
+    }
 );

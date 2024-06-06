@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { GetAllUserRequest } from "@/services/apiService/requestTypes.ts";
-import { GetAllUserResponse } from "@/services/apiService/responseTypes.ts";
+import { GetAllUserRequest, LoginRequest } from "@/services/apiService/requestTypes.ts";
+import { GetAllUserResponse, LoginResponse } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 
@@ -47,6 +47,15 @@ class ApiService implements APIServiceImpl{
         return await this.axiosInstance.delete<string>(
             `/account/delete?id=${accountId}`,
         );
+    }
+
+    async login(payload: LoginRequest): Promise<LoginResponse> { 
+        const resp = await this.axiosInstance.post<LoginResponse>(
+            '/auth/login',
+            payload
+        );
+
+        return resp.data;
     }
 }
 
