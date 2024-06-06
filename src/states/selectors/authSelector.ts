@@ -1,9 +1,22 @@
-import { AppState } from "@/states/types.ts";
 import { createSelector } from "@reduxjs/toolkit";
+import { IRootState } from "../rootReducer";
+import stringHelpers from "@/helpers/stringHelper";
+import dayjs from "dayjs";
 
-const getAuthReducer = (appStates: AppState) => appStates.auth;
+const getAuthReducer = (appStates: IRootState) => appStates.authReducer;
 
 export const selectUserIsSignedIn = createSelector(
     getAuthReducer,
-    (state) => state.isSignedIn
+    (state) => {        
+        if(!state.token || !state.isSignedIn){
+            return false;
+        }
+
+        const data = stringHelpers.getDataFormToken(state.token);
+        if(dayjs().valueOf() < (data?.exp * 1000)) {
+            return true;
+        }
+
+        return false;
+    }
 );
