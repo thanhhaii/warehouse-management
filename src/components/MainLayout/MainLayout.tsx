@@ -1,15 +1,18 @@
 // Vendor
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Dropdown } from "antd";
+import { Dropdown } from "antd";
 import { NavLink, useLocation, Outlet } from "react-router-dom";
 import { ProLayout } from "@ant-design/pro-components";
 
 // Src
 import { defaultMenuItems } from "@/utils/menu.tsx";
 import AppBreadcrumb from "../AppBreadcrumb/AppBreadcrumb";
+import { useAppDispatch } from "@/states/hooks";
+import { authActions } from "@/states/slices/authSlice";
 
 const MainLayout: React.FunctionComponent = () => {
     const { pathname } = useLocation();
+    const dispatch = useAppDispatch();
 
     return (
         <ProLayout
@@ -28,8 +31,7 @@ const MainLayout: React.FunctionComponent = () => {
                                 icon: <LogoutOutlined />,
                                 label: 'Logout',
                                 onClick: () => {
-                                    window.localStorage.clear();
-                                    window.location.reload();
+                                    dispatch(authActions.logout());
                                 }
                             }]
                         }}

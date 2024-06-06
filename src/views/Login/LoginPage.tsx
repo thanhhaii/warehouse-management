@@ -2,30 +2,34 @@
 import { Col, Row } from "antd";
 import { ProCard, ProForm, ProFormText } from "@ant-design/pro-components";
 import { useCallback } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 // Src
 import { LoginFormType } from "@/views/Login/types/loginModels.ts";
 import { useAppDispatch, useAppSelector } from "@/states/hooks.ts";
-import { authActions } from "@/states/slices/authSlice.ts";
 import { selectUserIsSignedIn } from "@/states/selectors/authSelector";
+import { useLoginMutation } from "@/states/services/authentication";
 
-const LoginPage: React.FunctionComponent = () => {
-    const navigator = useNavigate();
+const LoginPage: React.FunctionComponent = () => {    
+    // Hooks
+    const [form] = ProForm.useForm();
     const dispatch = useAppDispatch();
     const isLogin = useAppSelector(selectUserIsSignedIn);
-    console.log('1');
+    const [login] = useLoginMutation();
 
     // Handler
-    const handleFinish = useCallback(async (value: LoginFormType) => {
-        {console.log('4');}
-        if(value.password === 'admin' && value.username === 'admin'){
-            dispatch(authActions.loginSuccess());
-            navigator("/", {
-                replace: true
-            });
+    const handleFinish = useCallback(async (value: LoginFormType) => {        
+        await login({
+            password: value.password,
+            username: value.username
+        });        
+    }, [dispatch, login]);    
+
+    const handleKeyUp = useCallback((event: any) => {        
+        if (event.keyCode === 13) {
+            form.submit();
         }
-    }, [dispatch]);
+    }, [form]);
 
     if(isLogin){
         return <Navigate to="/" replace />;
@@ -38,7 +42,7 @@ const LoginPage: React.FunctionComponent = () => {
                     <ProCard
                         title={<h1 className="text-2xl">Đăng Nhập</h1>}
                         className="shadow-lg !rounded-xl">
-                        <ProForm<LoginFormType>
+                        <ProForm<LoginFormType>                            
                             submitter={{
                                 resetButtonProps: false,
                                 searchConfig: {
@@ -50,7 +54,9 @@ const LoginPage: React.FunctionComponent = () => {
                                     );
                                 }
                             }}
-                            onFinish={handleFinish}
+                            form={form}
+                            onFinish={handleFinish}                            
+                            onKeyUp={handleKeyUp}
                         >
                             <ProFormText
                                 label="Tên tài khoản"
@@ -58,7 +64,7 @@ const LoginPage: React.FunctionComponent = () => {
                                 placeholder="Tên tài khoản"
                                 rules={[
                                     {
-                                        pattern: /^[a-zA-Z0-9]+$/,
+                                        pattern: /^[a-zA-Z0-9._@]+$/,
                                         message: "Có kí tự không phù hợp"
                                     },
                                     {
