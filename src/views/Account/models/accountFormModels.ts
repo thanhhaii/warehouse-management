@@ -6,6 +6,4 @@ export type AccountFormModels = Omit<AccountModel, 'id' | 'roles'> & {
 export type CreateAccountModel = Omit<AccountModel, 'id' | 'roles'> & {
     roles: string[];
 };
-export type UpdateAccountModel = Omit<AccountModel, 'password' | 'roles'> & {
-    roles: string[];
-};
+export type UpdateAccountModel = Omit<AccountModel, 'password'>;

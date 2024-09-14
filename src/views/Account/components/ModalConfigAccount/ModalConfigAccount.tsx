@@ -50,7 +50,8 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
                 await updateAccountMutation.mutateAsync({
                     ...data,
                     ...payload,
-                    id: data.id
+                    id: data.id,
+                    roles: data.roles,
                 });
             }
         } finally {
@@ -170,6 +171,7 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
                 required
                 rules={[rulesHelper.requiredRule]}
                 colProps={{ span: 12 }}
+                disabled={action === ActionEnum.VIEW || action === ActionEnum.UPDATE}
             />
         </ModalForm>
     );
