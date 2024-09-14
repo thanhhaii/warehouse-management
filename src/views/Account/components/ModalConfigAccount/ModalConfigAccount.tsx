@@ -7,11 +7,12 @@ import { useCallback, useEffect, useState } from "react";
 
 // Src
 import { AccountFormModels, CreateAccountModel } from "@/views/Account/models/accountFormModels.ts";
-import { defaultOptionsRole, dictRoleEnumToRoleData } from "@/views/Account/helpers/accountOptions.ts";
+import { defaultOptionsRole } from "@/views/Account/helpers/accountOptions.ts";
 import usePostCreateAccountMutation from "@/views/Account/hooks/usePostCreateAccountMutation.ts";
 import { AccountRole } from "@/enums/accountEnums.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import usePutUpdateAccountMutation from "@/views/Account/hooks/usePutUpdateAccountMutation.ts";
+import Constants from "@/helpers/constVariable";
 
 export type ModalConfigAccountProps = {
     data?: AccountModel
@@ -35,7 +36,9 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
         try {
             const payload: CreateAccountModel = {
                 ...value,
-                roles: [dictRoleEnumToRoleData[value.roles]]
+                roles: [value.roles],
+                username: value.phoneNumber,
+                password: Constants.defaultPassword,
             };
             if(!data){
                 await createAccountMutation.mutateAsync(payload);
@@ -60,10 +63,10 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
         if(open && data){
             form.setFieldsValue({
                 address: data.address,
-                roles: data.roles[0]?.id,
+                roles: data.roles[0]?.name,
                 email: data.email,
                 fullName: data.fullName,
-                phone: data.phone,
+                phoneNumber: data.phoneNumber,
                 individualCard: data.individualCard,
             });
         }
@@ -121,7 +124,7 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
                 colProps={{ span: 12 }}
             />
             <ProFormText
-                name="phone"
+                name="phoneNumber"
                 placeholder="Số điện thoại"
                 label="Số điện thoại"
                 required

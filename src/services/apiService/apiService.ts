@@ -18,20 +18,43 @@ class ApiService implements APIServiceImpl{
                 'Content-Type': 'application/json',
             },
         });
+
+        this.axiosInstance.interceptors.request.use(function (config) {
+            // Do something before request is sent
+            const persistAuth = JSON.parse(localStorage.getItem('persist:root' ) || '{}');
+            const token = persistAuth?.authReducer;
+
+            if(token?.isSignedIn && token?.token) {
+                return  {
+                    ...config, 
+                    headers: {
+                        ...config.headers,
+                        Authorization: `Bearer ${token?.token}`
+                    }
+                } as any;
+            }
+
+            return {
+                ...config
+            };
+        }, function (error) {
+            // Do something with request error
+            return Promise.reject(error);
+        });
     }
 
     async getUser({
         pageSize = 10,
         pageNumber = 0
     }: Partial<GetAllUserRequest>): Promise<GetAllUserResponse>{
-        const resp = await this.axiosInstance?.get<GetAllUserResponse>(`/account/findAll?pageSize=${pageSize}&pageNumber=${pageNumber}`);
+        const resp = await this.axiosInstance?.get<GetAllUserResponse>(`/user/list?pageSize=${pageSize}&pageNumber=${pageNumber}`);
 
         return resp?.data ?? [];
     }
 
     async createUser(payload: CreateAccountModel): Promise<AxiosResponse<string>> {
         return await this.axiosInstance?.post<string>(
-            '/account/create',
+            '/auth/signup',
             payload
         );
     }

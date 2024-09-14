@@ -40,11 +40,11 @@ const AccountPage: React.FunctionComponent = () => {
                 return false;
             }
 
-            if(!stringHelpers.isIncludeText(account.phone, data.searchPhone)){
+            if(!stringHelpers.isIncludeText(account.phoneNumber, data.searchPhone)){
                 return false;
             }
 
-            return !(data.searchRole && account?.roles?.[0].role !== data?.searchRole);
+            return !(data.searchRole && account?.roles?.[0].name !== data?.searchRole);
         });
 
         setDataSource(dataFiltered ?? []);
@@ -61,6 +61,7 @@ const AccountPage: React.FunctionComponent = () => {
     return (
         <ProTable<AccountModel, AccountRequestObjectKey>
             size="small"
+            loading={accountQuery.isFetching}
             request={request}
             dataSource={dataSource}
             bordered
@@ -76,6 +77,11 @@ const AccountPage: React.FunctionComponent = () => {
             pagination={{
                 defaultPageSize: 10,
                 hideOnSinglePage: true
+            }}
+            options={{
+                density: false,
+                reload: () => accountQuery.refetch(),
+                setting: false
             }}
         />
     );

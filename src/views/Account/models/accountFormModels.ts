@@ -1,8 +1,11 @@
 import { AccountModel } from "@/types/accountModels.ts";
-import { AccountRole } from "@/enums/accountEnums.ts";
 
 export type AccountFormModels = Omit<AccountModel, 'id' | 'roles'> & {
-    roles: AccountRole
+    roles: string;
 };
-export type CreateAccountModel = Omit<AccountModel, 'id' | 'password'>;
-export type UpdateAccountModel = Omit<AccountModel, 'password'>;
+export type CreateAccountModel = Omit<AccountModel, 'id' | 'roles'> & {
+    roles: string[];
+};
+export type UpdateAccountModel = Omit<AccountModel, 'password' | 'roles'> & {
+    roles: string[];
+};

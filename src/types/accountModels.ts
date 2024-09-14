@@ -1,16 +1,17 @@
 export type Role = {
     id: number;
-    role: string;
+    name: string;
 };
 
 export type AccountModel = {
     id: number;
     fullName: string;
-    phone: string;
+    phoneNumber: string;
     individualCard: string;
     email: string;
     roles: Role[];
     active?: boolean;
     address: string;
     password: string;
+    username: string;
 };

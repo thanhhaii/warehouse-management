@@ -4,6 +4,7 @@ import { ProColumns } from "@ant-design/pro-components";
 import useDeleteAccountMutation from "@/views/Account/hooks/useDeleteAccountMutation.ts";
 import { Button, Popconfirm, Space } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import { AccountRole } from "@/enums/accountEnums";
 
 const useAccountColumns = (): ProColumns<AccountModel>[] => {
     const deleteAccountMutation = useDeleteAccountMutation();
@@ -23,7 +24,7 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
         },
         {
             title: 'Điện thoại',
-            dataIndex: 'phone',
+            dataIndex: 'phoneNumber',
             align: 'center',
             formItemProps: {
                 name: 'searchPhone'
@@ -58,14 +59,18 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
             },
             valueEnum: {
                 ADMIN_ROLE: {
-                    text: 'ADMIN_ROLE'
+                    text: AccountRole.ADMIN_ROLE
                 },
                 STAFF_ROLE: {
-                    text: 'STAFF_ROLE'
+                    text: AccountRole.STAFF_ROLE
                 }
             },
             renderText: (role: Role[]) => {
-                return role?.[0]?.role;
+                console.log({ role });
+                return {
+                    [AccountRole.ADMIN_ROLE]: 'Quản trị viên',
+                    [AccountRole.STAFF_ROLE]: 'Nhân viên',
+                }[role[0].name];
             }
         },
         {
