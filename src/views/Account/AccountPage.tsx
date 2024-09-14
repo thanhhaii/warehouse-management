@@ -8,6 +8,9 @@ import useAccountColumns from "@/views/Account/hooks/useAccountColumns.tsx";
 import { useCallback, useEffect, useState } from "react";
 import { AccountModel } from "@/types/accountModels.ts";
 import stringHelpers from "@/helpers/stringHelper.ts";
+import { ActionEnum } from "@/enums/commonEnum";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 type AccountRequestObjectKey = Partial<{
     searchFullName?: string;
@@ -17,15 +20,49 @@ type AccountRequestObjectKey = Partial<{
     searchRole?: 'ADMIN_ROLE' | 'STAFF_ROLE'
 }>;
 
+type DataModelType = {
+    data?: AccountModel;
+    action: ActionEnum;
+};
+
 const AccountPage: React.FunctionComponent = () => {
+    // States
+    const [open, setOpen] = useState<boolean>(false);
+    const [dataModel, setDataModel] = useState<DataModelType>({
+        action: ActionEnum.VIEW
+    });
     const [dataSource, setDataSource] = useState<AccountModel[]>([]);
 
     // Hooks
-    const columns = useAccountColumns();
     const accountQuery = useGetListAccountQuery({
         pageNumber: 0,
         pageSize: 1000
     });
+
+    // Handler
+    const handleCreateAccount = useCallback(() => {
+        setOpen(true);
+        setDataModel({
+            action: ActionEnum.CREATE,
+            data: undefined,
+        });
+    }, []);
+
+    const handleUpdateAccount = useCallback((data: AccountModel) => {
+        setOpen(true);
+        setDataModel({
+            data,
+            action: ActionEnum.UPDATE,
+        });
+    }, []);
+
+    const handleViewAccount = useCallback((data: AccountModel) => {
+        setOpen(true);
+        setDataModel({
+            data,
+            action: ActionEnum.VIEW,
+        });
+    }, []);
 
     const request = useCallback(async (data: AccountRequestObjectKey) => {
         const dataFiltered = accountQuery?.data?.filter(account => {
@@ -59,31 +96,43 @@ const AccountPage: React.FunctionComponent = () => {
     }, [accountQuery.data]);
 
     return (
-        <ProTable<AccountModel, AccountRequestObjectKey>
-            size="small"
-            loading={accountQuery.isFetching}
-            request={request}
-            dataSource={dataSource}
-            bordered
-            rowKey="id"
-            columns={columns}
-            search={{
-                labelWidth: 'auto',
-                defaultCollapsed: false
-            }}
-            toolBarRender={() => [
-                <ModalConfigAccount />
-            ]}
-            pagination={{
-                defaultPageSize: 10,
-                hideOnSinglePage: true
-            }}
-            options={{
-                density: false,
-                reload: () => accountQuery.refetch(),
-                setting: false
-            }}
-        />
+        <>
+            <ProTable<AccountModel, AccountRequestObjectKey>
+                size="small"
+                loading={accountQuery.isFetching}
+                request={request}
+                dataSource={dataSource}
+                bordered
+                rowKey="id"
+                columns={ useAccountColumns({
+                    onUpdate: handleUpdateAccount,
+                    onView: handleViewAccount
+                })}
+                search={{
+                    labelWidth: 'auto',
+                    defaultCollapsed: false
+                }}
+                toolBarRender={() => [
+                    <Button
+                        key="create button"
+                        onClick={handleCreateAccount}
+                        type="primary"
+                        icon={<PlusOutlined /> }
+                        children="Tạo tài khoản"
+                    />
+                ]}
+                pagination={{
+                    defaultPageSize: 10,
+                    hideOnSinglePage: true
+                }}
+                options={{
+                    density: false,
+                    reload: () => accountQuery.refetch(),
+                    setting: false
+                }}
+            />
+            <ModalConfigAccount open={open} setOpen={setOpen} action={dataModel.action} data={dataModel?.data} />
+        </>
     );
 };
 

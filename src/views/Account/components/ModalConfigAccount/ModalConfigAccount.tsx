@@ -1,7 +1,5 @@
 // Vendor
 import { ModalForm, ProForm, ProFormSelect, ProFormText } from "@ant-design/pro-components";
-import { Button } from "antd";
-import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { rulesHelper } from "@/helpers/formRulesHelper.ts";
 import { useCallback, useEffect, useState } from "react";
 
@@ -13,16 +11,22 @@ import { AccountRole } from "@/enums/accountEnums.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import usePutUpdateAccountMutation from "@/views/Account/hooks/usePutUpdateAccountMutation.ts";
 import Constants from "@/helpers/constVariable";
+import { ActionEnum } from "@/enums/commonEnum";
 
 export type ModalConfigAccountProps = {
     data?: AccountModel
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    action: ActionEnum;
 };
 
 const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
-    data
+    data,
+    open,
+    setOpen,
+    action
 }) => {
     // States
-    const [open, setOpen] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
 
     // Hooks
@@ -60,6 +64,12 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
     }, []);
 
     useEffect(() => {
+        if(action === ActionEnum.CREATE){
+            form.resetFields();
+        }
+    }, [action]);
+
+    useEffect(() => {
         if(open && data){
             form.setFieldsValue({
                 address: data.address,
@@ -89,27 +99,23 @@ const ModalConfigAccount: React.FC<ModalConfigAccountProps> = ({
             initialValues={{
                 roles: AccountRole.STAFF_ROLE
             }}
-            trigger={
-                data ?
-                    <Button
-                        type="primary"
-                        icon={<EditOutlined /> }
-                        ghost
-                    />
-                    : <Button
-                        type="primary"
-                        icon={<PlusOutlined /> }
-                        children="Tạo tài khoản"
-                    />
-            }
-            submitter={{
+            submitter={action === ActionEnum.VIEW ? false : {
                 searchConfig: {
-                    submitText: data ? 'Cập nhật tài khoản' : 'Tạo tài khoản'
-                }
+                    submitText: {
+                        [ActionEnum.CREATE]: 'Tạo tài khoản',
+                        [ActionEnum.VIEW]: 'Xem chi tiết tài khoản',
+                        [ActionEnum.UPDATE]: 'Cập nhật tài khoản'
+                    }[action]
+                },
             }}
-            title={data ? "Cập nhật tài khoản" : "Tạo tài khoản mới"}
+            title={{
+                [ActionEnum.CREATE]: 'Tạo tài khoản',
+                [ActionEnum.VIEW]: 'Xem chi tiết tài khoản',
+                [ActionEnum.UPDATE]: 'Cập nhật tài khoản'
+            }[action]}
             form={form}
             grid
+            disabled={action === ActionEnum.VIEW}
             onFinish={handleFinish}
             rowProps={{
                 gutter: [24, 12]

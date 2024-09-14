@@ -1,12 +1,19 @@
 import { AccountModel, Role } from "@/types/accountModels.ts";
-import ModalConfigAccount from "@/views/Account/components/ModalConfigAccount/ModalConfigAccount.tsx";
 import { ProColumns } from "@ant-design/pro-components";
 import useDeleteAccountMutation from "@/views/Account/hooks/useDeleteAccountMutation.ts";
 import { Button, Popconfirm, Space } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { AccountRole } from "@/enums/accountEnums";
 
-const useAccountColumns = (): ProColumns<AccountModel>[] => {
+type ColumnsProps = { 
+    onView: (data: AccountModel) => void;
+    onUpdate: (data: AccountModel) => void;
+};
+
+const useAccountColumns = ({
+    onView,
+    onUpdate
+}: ColumnsProps): ProColumns<AccountModel>[] => {
     const deleteAccountMutation = useDeleteAccountMutation();
 
     return [
@@ -28,18 +35,6 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
             align: 'center',
             formItemProps: {
                 name: 'searchPhone'
-            }
-        },
-        {
-            title: 'Căn cước công dân',
-            dataIndex: 'individualCard',
-            search: false
-        },
-        {
-            title: 'Địa chỉ',
-            dataIndex: 'address',
-            formItemProps: {
-                name: 'searchAddress'
             }
         },
         {
@@ -80,7 +75,12 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
             render: (_, entity) => {
                 return (
                     <Space>
-                        <ModalConfigAccount data={entity}/>
+                        <Button
+                            type="primary"
+                            icon={<EditOutlined /> }
+                            ghost
+                            onClick={() => onUpdate(entity)}
+                        />
                         <Popconfirm
                             title="Xoá tài khoản"
                             description="Bạn có chắc chắn muốn xoá tài khoản này không?"
@@ -94,6 +94,12 @@ const useAccountColumns = (): ProColumns<AccountModel>[] => {
                                 icon={<DeleteOutlined />}
                             />
                         </Popconfirm>
+                        <Button
+                            type="primary"
+                            icon={<EyeInvisibleOutlined /> }
+                            ghost
+                            onClick={() => onView(entity)}
+                        />
                     </Space>
                 );
             }
