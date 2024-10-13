@@ -5,6 +5,7 @@ import MainLayout from "@/components/MainLayout/MainLayout.tsx";
 import LoginPage from "@/views/Login/LoginPage.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
 import { lazy } from "react";
+import CategoryPage from "@/views/Category/index.tsx";
 
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
 const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPage.tsx"));
@@ -50,7 +51,7 @@ const AppRoutes: React.FunctionComponent = () => {
                 <Route
                     path="category"
                     element={
-                        <ProtectedRoute children={<h1>Category /</h1>} />
+                        <ProtectedRoute children={<CategoryPage />} />
                     }
                 />
                 <Route

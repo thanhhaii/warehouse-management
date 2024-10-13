@@ -61,7 +61,6 @@ const useAccountColumns = ({
                 }
             },
             renderText: (role: Role[]) => {
-                console.log({ role });
                 return {
                     [AccountRole.ADMIN_ROLE]: 'Quản trị viên',
                     [AccountRole.STAFF_ROLE]: 'Nhân viên',
@@ -95,9 +94,7 @@ const useAccountColumns = ({
                             />
                         </Popconfirm>
                         <Button
-                            type="primary"
                             icon={<EyeInvisibleOutlined /> }
-                            ghost
                             onClick={() => onView(entity)}
                         />
                     </Space>

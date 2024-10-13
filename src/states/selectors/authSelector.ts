@@ -20,3 +20,7 @@ export const selectUserIsSignedIn = createSelector(
         return false;
     }
 );
+
+export const selectNameOfuser = createSelector(getAuthReducer, (state) => {
+    return stringHelpers.getDataFormToken(state.token)?.sub;
+});

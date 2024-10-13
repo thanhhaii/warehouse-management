@@ -38,7 +38,7 @@ const LoginPage: React.FunctionComponent = () => {
     return (
         <div className="h-dvh w-dvw">
             <Row className="w-full h-full justify-center items-center">
-                <Col span={6}>
+                <Col span={18} sm={12} md={6}>
                     <ProCard
                         title={<h1 className="text-2xl">Đăng Nhập</h1>}
                         className="shadow-lg !rounded-xl">

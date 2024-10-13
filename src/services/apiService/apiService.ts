@@ -80,6 +80,40 @@ class ApiService implements APIServiceImpl{
 
         return resp.data;
     }
+
+    async getListCategory<T>(searchName?: string): Promise<T> {
+        const resp = await this.axiosInstance.get<T>(
+            '/user/category/list',
+            {
+                params: {
+                    name: searchName
+                }
+            }
+        );
+
+        return resp.data;
+    }
+
+    async createCategory(name: string, createdBy: string): Promise<number> {
+        const resp = await this.axiosInstance.post<number>(
+            '/user/category/create',
+            {
+                createdBy,
+                name
+            }
+        );
+
+        return resp.data;
+    }
+
+    async updateCategory(dataUpdate: any): Promise<any> {
+        const resp = await this.axiosInstance.put<any>(
+            '/user/category/update',
+            dataUpdate
+        );
+
+        return resp.data;
+    }
 }
 
 const apiService = new ApiService();

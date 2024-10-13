@@ -13,7 +13,8 @@ import rootReducer from './rootReducer';
 const persistConfig: PersistConfig<any, any> = {
     key: 'root',
     storage,
-    stateReconciler: autoMergeLevel2
+    stateReconciler: autoMergeLevel2,
+    blacklist: ['authenticationAPI', 'authReducer']
 };
 
 export const authPersistConfig: PersistConfig<any, any> = { 
