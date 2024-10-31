@@ -1,18 +1,16 @@
-import { ProTable } from "@ant-design/pro-components";
-import { useCallback, useState } from "react";
+import { ActionType, ProTable } from "@ant-design/pro-components";
+import { useCallback, useRef, useState } from "react";
 import ModalCreateCategory from "./components/ModalCreateCategory";
-import useGetListCategoryQuery from "./hooks/useGetListCategoryQuery";
 import useColumnsTableCategory from "./hooks/useColumnsTableCategory";
 import { CategoryItem } from "./types/categoryModels";
+import apiService from "@/services/apiService/apiService";
+import { buildMetricFilter } from "@/helpers/objectHelper";
 
 const CategoryPage: React.FunctionComponent = () => {
     // States
-    const [searchName, setSearchName] = useState<string>('');
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [categorySelected, setCategorySelected] = useState<CategoryItem>();
-
-    // Hooks
-    const getListCategory = useGetListCategoryQuery(searchName);
+    const actionRef = useRef<ActionType>(null);
 
     // Handler
     const handleUpdateCategory = useCallback((category: CategoryItem) => {
@@ -25,11 +23,24 @@ const CategoryPage: React.FunctionComponent = () => {
         !open && setCategorySelected(undefined);
     }, []);
 
-    const handleRequest = useCallback(async ({ name }: Record<string, any>) => {
-        setSearchName(name || '');
+    const handleRequest = useCallback(async ({ current, pageSize, id, name, categoryCode, createdBy }: any) => {
+        const resp = await apiService.getListCategory({
+            desc: false,
+            metricFilters: buildMetricFilter({
+                id, 
+                name, 
+                categoryCode, 
+                createdBy
+            }),
+            pageNumber: current - 1,
+            pageSize: pageSize || 10,
+            sortField: 'createDate'
+        });
 
         return {
-            data: []
+            data: resp.data,
+            success: true,
+            total: resp.totalItems,
         };
     }, []);
 
@@ -37,7 +48,6 @@ const CategoryPage: React.FunctionComponent = () => {
         <>
             <ProTable
                 rowKey="id"
-                dataSource={getListCategory.data?.sort((first, next) => first.id - next.id) || []}
                 columns={useColumnsTableCategory({
                     onUpdate: handleUpdateCategory
                 })}
@@ -48,12 +58,18 @@ const CategoryPage: React.FunctionComponent = () => {
                 pagination={{
                     hideOnSinglePage: true,
                 }}
+                scroll={{
+                    x: 'max-content'
+                }}
                 size="small"
                 options={{
-                    reload: () => getListCategory.refetch()
+                    setting: false,
+                    density: false,
                 }}
+                actionRef={actionRef}
                 toolBarRender={() => [
                     <ModalCreateCategory 
+                        onReloadList={() => actionRef.current?.reload()}
                         open={openModal} 
                         key="ModalConfig" 
                         onOpenChange={handleOpenChange} 

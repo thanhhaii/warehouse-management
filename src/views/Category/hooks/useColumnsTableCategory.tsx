@@ -27,32 +27,32 @@ const useColumnsTableCategory: ColumnsType = ({
         title: 'Mã danh mục',
         dataIndex: 'categoryCode',
         copyable: true,
-        search: false,
     },
     {
         title: 'Người tạo',
         dataIndex: 'createdBy',
         align: 'center',
-        search: false,
     },
     {
         title: 'Ngày tạo',
         align: 'center',
         dataIndex: 'createDate',
         search: false,
-        renderText: (value: number) => dayjs(value).format(Constants.defaultFormatDateTime)
+        renderText: (value: number) => dayjs(value * 1000).format(Constants.defaultFormatDateTime)
     },
     {
         title: 'Lần chỉnh sửa cuối cùng',
         align: 'center',
         dataIndex: 'lastModifiedDate',
         search: false,
-        renderText: (value: number) => dayjs(value).format(Constants.defaultFormatDateTime)
+        renderText: (value: number) => dayjs(value * 1000).format(Constants.defaultFormatDateTime)
     },
     {
         title: 'Hành động',
         align: 'center',
         search: false,
+        fixed: 'right',
+        width: 100,
         render: (_, category) => [
             <Button key="update" icon={<EditOutlined />} onClick={() => onUpdate(category)} />
         ]

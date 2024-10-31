@@ -7,7 +7,14 @@ export type CategoryItem = {
     categoryCode: string;
 };
 
-export type GetListCategoryResponse = CategoryItem[];
+export type GetListCategoryResponse = {
+    data: CategoryItem[];
+    pageSize: number;
+    totalItems: number;
+    hasNext: boolean;
+    totalPage: number;
+}
+  ;
 
 export type CreateCategoryPayload = {
     name: string;
@@ -26,3 +33,14 @@ export type UpdateCategoryPayload = {
 };
 
 export type UpdateCategoryFailedResponse = CreateCategoryFailedResponse;
+
+export type GetListCategoryFilter = {
+    sortField: string;
+    desc: boolean;
+    pageSize: number;
+    pageNumber: number; // start with 0
+    metricFilters: {
+        filterField: string;
+        value: string;
+    }[];
+};

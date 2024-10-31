@@ -3,6 +3,7 @@ import { GetAllUserRequest, LoginRequest } from "@/services/apiService/requestTy
 import { GetAllUserResponse, LoginResponse } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
+import { GetListCategoryFilter, GetListCategoryResponse } from "@/views/Category/types/categoryModels";
 
 interface APIServiceImpl {
     getUser: (request: GetAllUserRequest) => Promise<GetAllUserResponse>;
@@ -81,14 +82,10 @@ class ApiService implements APIServiceImpl{
         return resp.data;
     }
 
-    async getListCategory<T>(searchName?: string): Promise<T> {
-        const resp = await this.axiosInstance.get<T>(
+    async getListCategory(filter: GetListCategoryFilter): Promise<GetListCategoryResponse> {
+        const resp = await this.axiosInstance.post<GetListCategoryResponse>(
             '/user/category/list',
-            {
-                params: {
-                    name: searchName
-                }
-            }
+            filter
         );
 
         return resp.data;

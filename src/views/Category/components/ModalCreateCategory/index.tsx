@@ -18,12 +18,14 @@ type ModalCreateCategoryProps = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     dataUpdate?: CategoryItem;
+    onReloadList: () => void;
 };
 
 const ModalCreateCategory: React.FC<ModalCreateCategoryProps> = ({
     open,
     onOpenChange,
-    dataUpdate
+    dataUpdate,
+    onReloadList
 }) => { 
     const nameOfCurrentUser = useAppSelector(selectNameOfuser);
 
@@ -50,6 +52,7 @@ const ModalCreateCategory: React.FC<ModalCreateCategoryProps> = ({
     useEffect(() => {
         if(createCategory.status === 'success' || updateCategory.status === 'success') {
             onOpenChange(false);
+            onReloadList();
         }
     }, [createCategory.status, updateCategory.status]);
 
