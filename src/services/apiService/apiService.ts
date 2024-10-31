@@ -114,6 +114,37 @@ class ApiService implements APIServiceImpl{
 
         return resp.data;
     }
+
+    // Supplier
+    async createSupplier<T = any>(payload: T): Promise<any> {
+        const resp = await this.axiosInstance.post(
+            '/user/supplier/create',
+            payload
+        );
+
+        return resp.data;
+    }
+
+    async getListSupplier<T = any>(filter?: string): Promise<T> {
+        const resp = await this.axiosInstance.get<T>( 
+            '/user/supplier/list',
+            {
+                params: {
+                    filter
+                }
+            }
+        );
+
+        return resp.data;
+    }
+
+    async getDetailSupplier<T = any>(supplierId: string): Promise<T> {
+        const resp = await this.axiosInstance.get<T>(
+            `/user/supplier/${supplierId}`
+        );
+
+        return resp.data;
+    }
 }
 
 const apiService = new ApiService();
