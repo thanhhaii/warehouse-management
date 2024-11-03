@@ -1,14 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import AccountPage from "../views/Account/AccountPage.tsx";
-import ProductPage from "../views/ProductPage.tsx";
 import MainLayout from "@/components/MainLayout/MainLayout.tsx";
-import LoginPage from "@/views/Login/LoginPage.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
 import { lazy } from "react";
-import CategoryPage from "@/views/Category/index.tsx";
 
+// Page
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
 const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPage.tsx"));
+const AccountPage = lazy(() => import("@/views/Account/AccountPage.tsx"));
+const ProductPage = lazy(() => import("@/views/Product/ProductPage.tsx"));
+const LoginPage = lazy(() => import("@/views/Login/LoginPage.tsx"));
+const CategoryPage = lazy(() => import("@/views/Category/index.tsx"));
+const CreateCategoryPage = lazy(() => import("@/views/Product/CreateProductPage"));
 
 const AppRoutes: React.FunctionComponent = () => {
     return (
@@ -34,6 +36,12 @@ const AppRoutes: React.FunctionComponent = () => {
                     path="product"
                     element={
                         <ProtectedRoute children={<ProductPage />} />
+                    }
+                />
+                <Route
+                    path="product/create"
+                    element={
+                        <ProtectedRoute children={<CreateCategoryPage />} />
                     }
                 />
                 <Route

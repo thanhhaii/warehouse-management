@@ -7,3 +7,14 @@ export type LoginRequest = {
     username: string;
     password: string;
 };
+
+export type GetListFilterPayload = { 
+    sortField: string;
+    desc: boolean;
+    pageSize: number;
+    pageNumber: number; // start with 0
+    metricFilters: {
+        filterField: string;
+        value: string;
+    }[];
+};

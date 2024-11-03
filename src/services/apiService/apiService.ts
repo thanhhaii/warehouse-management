@@ -1,9 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { GetAllUserRequest, LoginRequest } from "@/services/apiService/requestTypes.ts";
+import { GetAllUserRequest, GetListFilterPayload, LoginRequest } from "@/services/apiService/requestTypes.ts";
 import { GetAllUserResponse, LoginResponse } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import { GetListCategoryFilter, GetListCategoryResponse } from "@/views/Category/types/categoryModels";
+import { GetListSupplierResponse } from "@/views/Provider/types/supplierModels";
+import { CreateProductPayload, CreateProductResponse, GetDetailProductResponse, GetListProductResponse } from "@/views/Product/types/productModels";
 
 interface APIServiceImpl {
     getUser: (request: GetAllUserRequest) => Promise<GetAllUserResponse>;
@@ -122,7 +124,7 @@ class ApiService implements APIServiceImpl{
         return resp.data;
     }
 
-    async getListSupplier<T = any>(filter?: string): Promise<T> {
+    async getListSupplier<T = GetListSupplierResponse>(filter?: string): Promise<T> {
         const resp = await this.axiosInstance.get<T>( 
             '/user/supplier/list',
             {
@@ -138,6 +140,33 @@ class ApiService implements APIServiceImpl{
     async getDetailSupplier<T = any>(supplierId: string): Promise<T> {
         const resp = await this.axiosInstance.get<T>(
             `/user/supplier/${supplierId}`
+        );
+
+        return resp.data;
+    }
+
+    // Product API
+    async getListProduct(filter: GetListFilterPayload): Promise<GetListProductResponse> {
+        const resp = await this.axiosInstance.post(
+            '/user/product/list',
+            filter
+        );
+
+        return resp.data;
+    }
+
+    async createProduct(payload: CreateProductPayload): Promise<CreateProductResponse>{
+        const resp = await this.axiosInstance.post(
+            '/user/product/create',
+            payload,
+        );
+
+        return resp.data;
+    }
+
+    async getDetailProduct(productId: string): Promise<GetDetailProductResponse>{
+        const resp = await this.axiosInstance.get(
+            `/user/product/${productId}`
         );
 
         return resp.data;
