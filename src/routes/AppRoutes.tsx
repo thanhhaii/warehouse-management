@@ -7,10 +7,13 @@ import { lazy } from "react";
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
 const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPage.tsx"));
 const AccountPage = lazy(() => import("@/views/Account/AccountPage.tsx"));
-const ProductPage = lazy(() => import("@/views/Product/ProductPage.tsx"));
 const LoginPage = lazy(() => import("@/views/Login/LoginPage.tsx"));
 const CategoryPage = lazy(() => import("@/views/Category/index.tsx"));
-const CreateCategoryPage = lazy(() => import("@/views/Product/CreateProductPage"));
+
+// Product Page
+const ProductPage = lazy(() => import("@/views/Product/ProductPage.tsx"));
+const UpdateProductPage = lazy(() => import("@/views/Product/UpdateProductPage.tsx"));
+const CreateProductPage = lazy(() => import("@/views/Product/CreateProductPage"));
 
 const AppRoutes: React.FunctionComponent = () => {
     return (
@@ -41,7 +44,13 @@ const AppRoutes: React.FunctionComponent = () => {
                 <Route
                     path="product/create"
                     element={
-                        <ProtectedRoute children={<CreateCategoryPage />} />
+                        <ProtectedRoute children={<CreateProductPage />} />
+                    }
+                />
+                <Route
+                    path="product/:id/:action"
+                    element={
+                        <ProtectedRoute children={<UpdateProductPage />} />
                     }
                 />
                 <Route

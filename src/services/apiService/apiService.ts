@@ -155,7 +155,7 @@ class ApiService implements APIServiceImpl{
         return resp.data;
     }
 
-    async createProduct(payload: CreateProductPayload): Promise<CreateProductResponse>{
+    async createProduct(payload: Partial<CreateProductPayload>): Promise<CreateProductResponse>{
         const resp = await this.axiosInstance.post(
             '/user/product/create',
             payload,

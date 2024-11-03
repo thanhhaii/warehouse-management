@@ -2,7 +2,9 @@ import { ProColumns } from "@ant-design/pro-components";
 import { ProductItem } from "@/views/Product/types/productModels.ts";
 import { formatConcurrency, formatTime } from "./numberHelper";
 import { Button, Space, Typography } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { ActionEnum } from "@/enums/commonEnum";
 
 export const productTableConfig: ProColumns<ProductItem>[] = [
     {
@@ -62,9 +64,21 @@ export const productTableConfig: ProColumns<ProductItem>[] = [
         width: 100,
         align: 'center',
         search: false,
-        render: () => (
-            <Space> 
-                <Button icon={<EditOutlined />} className="border-none" />
+        render: (_, { id }) => (
+            <Space className="gap-2"> 
+                <Link to={`/product/${id}/${ActionEnum.UPDATE}`}>
+                    <Button 
+                        icon={<EditOutlined />} 
+                        className="border-none"
+                        disabled 
+                    />
+                </Link>
+                <Link to={`/product/${id}/${ActionEnum.VIEW}`}>
+                    <Button 
+                        icon={<EyeOutlined />} 
+                        className="border-none" 
+                    />
+                </Link>
             </Space>
         )
     }
