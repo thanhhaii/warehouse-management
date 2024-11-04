@@ -1,3 +1,5 @@
+import { GetListResponse } from "@/types/commonModels";
+
 export type SupplierModel = { 
     id: string;
     createDate: string;
@@ -12,10 +14,7 @@ export type SupplierModel = {
 export type FormCreateSupplier = Omit<SupplierModel, "id" | "code" | "createDate" | "lastModifiedDate">;
 export type CreateSupplierPayload = FormCreateSupplier;
 
-export type GetListSupplierResponse = { 
-    message: string;
-    data: SupplierModel[];
-};
+export type GetListSupplierResponse = GetListResponse<SupplierModel>;
 
 export type GetDetailSupplierResponse = {
     message: string;

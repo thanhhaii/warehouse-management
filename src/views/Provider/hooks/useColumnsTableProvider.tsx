@@ -1,7 +1,7 @@
 import Constants from "@/helpers/constVariable";
 import { EditOutlined } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
-import { Button, Space } from "antd";
+import { Button, Space, Typography } from "antd";
 import dayjs from "dayjs";
 import { SupplierModel } from "../types/supplierModels";
 
@@ -14,31 +14,28 @@ const useColumnsTableProvider: ColumnsType = ({
 }) => {
     return [
         {
-            dataIndex: 'filter',
-            hideInTable: true,
-            title: 'Tìm kiếm',
-            fieldProps: {
-                placeholder: 'Tìm kiếm thông tin'
-            }
-        },
-        {
             title: 'ID',
             dataIndex: 'id',
             align: 'center',
             ellipsis: true,
-            copyable: true,
-            search: false,
+            copyable: true,         
+            search: false,   
+            render: (_, { id }) => 
+                <Typography.Paragraph 
+                    className="w-40 !mb-0" 
+                    copyable 
+                    ellipsis={{ rows: 1 }} >
+                    {id}
+                </Typography.Paragraph>
         },
         {
             title: 'Tên nhà cung cấp',
-            dataIndex: 'name',
-            search: false,
+            dataIndex: 'name',       
         },
         {
             title: 'Mã nhà cung cấp',
             dataIndex: 'code',
-            copyable: true,
-            search: false,
+            copyable: true,            
         },
         {
             title: 'Địa chỉ',
@@ -47,8 +44,7 @@ const useColumnsTableProvider: ColumnsType = ({
         },
         {
             title: 'Số điện thoại',
-            dataIndex: 'phone',  
-            search: false,          
+            dataIndex: 'phone',                  
         },
         {
             title: 'Ngày tạo',
@@ -69,6 +65,7 @@ const useColumnsTableProvider: ColumnsType = ({
             align: 'center',
             search: false,
             fixed: 'right',
+            width: 100,
             render: (_, entity) => (
                 <Space>
                     <Button 

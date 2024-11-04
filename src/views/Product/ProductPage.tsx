@@ -37,7 +37,7 @@ const ProductPage: React.FunctionComponent = () => {
     return (
         <ProTable
             columns={productTableConfig}
-            search={{
+            search={{  
                 labelWidth: 'auto'
             }}
             rowKey="id"

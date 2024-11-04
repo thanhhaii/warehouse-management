@@ -6,25 +6,34 @@ import { PlusOutlined } from "@ant-design/icons";
 
 // Src
 import useColumnsTableProvider from "./hooks/useColumnsTableProvider";
-import useGetSupplierQuery from "./hooks/useGetSupplierQuery";
 import { useCallback } from "react";
 import apiService from "@/services/apiService/apiService";
 import { GetListSupplierResponse } from "./types/supplierModels";
+import { buildMetricFilter } from "@/helpers/objectHelper";
 
 const ProviderPage: React.FunctionComponent = () => {
     const navigate = useNavigate();
-    const getSupplierQuery = useGetSupplierQuery();    
 
     const handleUpdateSupplier = useCallback((supplierID: string) => { 
         navigate(`/provider/${supplierID}/update`);
     }, []);
 
-    const request = useCallback(async (param: any) => {
-        console.log({ param });
-        const resp = await apiService.getListSupplier<GetListSupplierResponse>(param?.filter);
+    const request = useCallback(async ({ current, pageSize, id, code, name, phone }: any) => {        
+        const resp = await apiService.getListSupplier<GetListSupplierResponse>({
+            desc: false,
+            metricFilters: buildMetricFilter({
+                id,
+                code,
+                name,
+                phone
+            }),
+            pageNumber: current - 1,
+            pageSize: pageSize || 10,
+            sortField: 'createDate'
+        });
 
         return {
-            data: resp.data || [],
+            data: resp.data.data || [],
             success: true
         };
     }, []);
@@ -36,7 +45,6 @@ const ProviderPage: React.FunctionComponent = () => {
                 onUpdateSupplier: handleUpdateSupplier
             })}
             rowKey="id"
-            loading={getSupplierQuery.isFetching}
             size="small"
             options={{
                 density: false,

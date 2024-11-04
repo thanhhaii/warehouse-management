@@ -124,14 +124,10 @@ class ApiService implements APIServiceImpl{
         return resp.data;
     }
 
-    async getListSupplier<T = GetListSupplierResponse>(filter?: string): Promise<T> {
-        const resp = await this.axiosInstance.get<T>( 
+    async getListSupplier<T = GetListSupplierResponse>(filter: GetListFilterPayload): Promise<T> {
+        const resp = await this.axiosInstance.post<T>( 
             '/user/supplier/list',
-            {
-                params: {
-                    filter
-                }
-            }
+            filter
         );
 
         return resp.data;
