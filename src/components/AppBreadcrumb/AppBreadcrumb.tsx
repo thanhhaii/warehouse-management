@@ -3,12 +3,15 @@ import { ItemType } from "antd/es/breadcrumb/Breadcrumb";
 import { Content } from "antd/es/layout/layout";
 import { useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { validate } from "uuid";
 
 const breadcrumbNameMap: Record<string, string> = {
     '/': 'Bảng điều khiển',
     '/account': 'Danh sách tài khoản',
     '/provider': 'Danh sách nhà cung cấp',
     '/provider/create': 'Thêm nhà cung cấp',
+    '/provider/:id/update': 'Cập nhật thông tin',
+    '/provider/:id/view': 'Xem thông tin',
     '/product': 'Danh sách sản phẩm',
     '/product/create': 'Thêm sản phẩm',
     '/category': 'Danh mục'
@@ -18,7 +21,13 @@ const AppBreadcrumb: React.FunctionComponent = () => {
     const location = useLocation();
 
     const breadcrumbItem = useMemo(( ): any => {
-        const pathSnippets = location.pathname.split('/').filter((i) => i);
+        const pathSnippets = location.pathname.split('/').filter((i) => i).map(path => {
+            if(validate(path)){
+                return ":id";
+            }
+
+            return path;
+        });
         if(pathSnippets.length === 0){
             return [
                 {
@@ -30,11 +39,11 @@ const AppBreadcrumb: React.FunctionComponent = () => {
 
         return pathSnippets.map((_, index) => {
             const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-            return {
-                path: url,
-                title: breadcrumbNameMap[url] || ''
-            };
-        });
+            return url;
+        }).filter(url => !url.endsWith(":id")).map(url => ({
+            path: url,
+            title: breadcrumbNameMap[url] || ''
+        }));
     }, [location]);
 
     const itemRender = useCallback((currentRoute: ItemType, _: any, items: any, paths: any) => { 

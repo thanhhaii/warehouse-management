@@ -20,3 +20,11 @@ export type GetDetailSupplierResponse = {
     message: string;
     data: SupplierModel;
 };
+
+export type UpdateSupplierPayload = {
+    id: string;
+    name: string;
+    phone: string;
+    address: string;
+    code: string;
+};

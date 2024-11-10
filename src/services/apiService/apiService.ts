@@ -4,7 +4,7 @@ import { GetAllUserResponse, LoginResponse } from "@/services/apiService/respons
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import { GetListCategoryFilter, GetListCategoryResponse } from "@/views/Category/types/categoryModels";
-import { GetListSupplierResponse } from "@/views/Provider/types/supplierModels";
+import { GetListSupplierResponse, UpdateSupplierPayload } from "@/views/Provider/types/supplierModels";
 import { CreateProductPayload, CreateProductResponse, GetDetailProductResponse, GetListProductResponse } from "@/views/Product/types/productModels";
 
 interface APIServiceImpl {
@@ -136,6 +136,20 @@ class ApiService implements APIServiceImpl{
     async getDetailSupplier<T = any>(supplierId: string): Promise<T> {
         const resp = await this.axiosInstance.get<T>(
             `/user/supplier/${supplierId}`
+        );
+
+        return resp.data;
+    }
+
+    async updateSupplier(payload: UpdateSupplierPayload): Promise<any>{
+        const resp = await this.axiosInstance.post(
+            '/user/supplier/update', 
+            payload,
+            {
+                params: {
+                    id: payload.id
+                }
+            }
         );
 
         return resp.data;

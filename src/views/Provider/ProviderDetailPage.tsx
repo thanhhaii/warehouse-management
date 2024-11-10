@@ -1,134 +1,77 @@
-import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
+import { ProForm } from "@ant-design/pro-components";
 import { Content } from "antd/es/layout/layout";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 // Src
-import { rulesHelper } from "@/helpers/formRulesHelper";
-import { FormCreateSupplier, GetDetailSupplierResponse } from "./types/supplierModels";
-import usePostCreateSupplierMutation from "./hooks/usePostCreateSupplierMutation";
+import { GetDetailSupplierResponse, SupplierModel } from "./types/supplierModels";
 import { useAppSelector } from "@/states/hooks";
 import { selectNameOfuser } from "@/states/selectors/authSelector";
 import apiService from "@/services/apiService/apiService";
+import { ActionEnum } from "@/enums/commonEnum";
+import FormSupplierPresentation from "./components/FormSupplierPresentation";
+import usePatchUpdateSupplierMutation from "./hooks/usePatchUpdateSupplierMutation";
+import { App } from "antd";
 
 const ProviderDetailPage: React.FunctionComponent = () => {
+    const { id, action } = useParams<{id: string, action: ActionEnum}>();
+    const { notification } = App.useApp();
+    const [initData, setInitData] = useState<SupplierModel>();
     const nameOfCurrentUser = useAppSelector(selectNameOfuser);
-
-    const { id } = useParams<{id: string}>();
-    console.log({ id });
-    const [form] = ProForm.useForm<FormCreateSupplier>();
-    const createSupplierMutation = usePostCreateSupplierMutation();
+    const [form] = ProForm.useForm<Partial<SupplierModel>>();
     const navigate = useNavigate();
+    const updateSupplierMutation = usePatchUpdateSupplierMutation();
     
-    const isCreate = useMemo(() => !id || id === 'create', [id]);
-
     // Handler
-    const handleFinish = useCallback(async (value: FormCreateSupplier) => {
-        createSupplierMutation.mutate({
-            address: value.address,
-            name: value.name,
-            phone: value.phone,
-            createdBy: nameOfCurrentUser,
+    const handleFinish = useCallback(async (values: Partial<SupplierModel>) => {    
+        if(!initData){
+            return;
+        }
+        updateSupplierMutation.mutate({
+            id: initData.id,
+            code: values.code || initData.code,
+            address: values.address || initData.address,
+            phone: values.phone || initData.phone,
+            name: values.code || initData.name,
         });
-    }, [nameOfCurrentUser]);
+    }, [nameOfCurrentUser, initData]);
 
-    const request = useCallback(async (): Promise<FormCreateSupplier> => {
-        if(!id || id === 'create') return {
-            address: '',
-            createdBy: '',
-            name: '',
-            phone: ''
-        };
+    const request = useCallback(async (): Promise<Partial<SupplierModel>> => {
+        if(!id) return {};
 
         const resp = await apiService.getDetailSupplier<GetDetailSupplierResponse>(id);
+        setInitData(resp.data);
         return resp.data;
     }, [id]);
 
     // Effect
     useEffect(() => {
-        if(createSupplierMutation.status === 'success'){
+        if(!id || updateSupplierMutation.status === 'success'){
             navigate('/provider', {
                 replace: true
             });
+            notification.success({
+                message: 'Thành công',
+                description: 'Cập nhật thông tin nhà cung cấp thành công!'
+            });
         }
-    }, [createSupplierMutation.status]);
+    }, [id, updateSupplierMutation.status]);
 
     return (
         <Content className="bg-white p-5 rounded-lg">
             <ProForm 
                 request={request}
                 onFinish={handleFinish}
-                submitter={!isCreate  ? false : {
+                disabled={action === ActionEnum.VIEW}
+                loading={updateSupplierMutation.isPending}
+                submitter={action === ActionEnum.VIEW ? false : {
                     searchConfig: {
-                        submitText: "Lưu thông tin"
-                    }
+                        submitText: "Cập nhật thông tin"
+                    },
+                    resetButtonProps: false
                 }}
-                disabled={!isCreate}
                 form={form} >
-                <ProFormGroup title="Thông tin chung">
-                    <ProFormText
-                        label="Tên nhà cung cấp"
-                        placeholder="Tên nhà cung cấp"
-                        name="name"
-                        required
-                        width="lg"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    <ProFormText
-                        label="Địa chỉ nhà cung cấp"
-                        placeholder="Địa chỉ nhà cung cấp"
-                        name="address"
-                        required
-                        width="xl"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    <ProFormText
-                        label="Số điện thoại"
-                        placeholder="Số điện thoại"
-                        name="phone"
-                        required
-                        width="lg"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    {/* <ProFormText
-                        label="Email"
-                        name="email"
-                        required
-                        width="lg"
-                        rules={[rulesHelper.requiredRule]}
-                    /> */}
-                </ProFormGroup>
-                {/* <ProFormGroup title="Thông tin sản phẩm">
-                    <ProFormSelect 
-                        required
-                        name="productType"
-                        width="lg"
-                        label="Loại hàng hoá"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    <ProFormMoney 
-                        required
-                        name="price"
-                        width="lg"
-                        label="Giá thành"
-                        locale="vi-VN"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    <ProFormDigit
-                        name="quantity"
-                        required
-                        width="lg"
-                        label="Số lượng"
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                    <ProFormTextArea 
-                        name="description"
-                        width="lg"
-                        label="Mô tả sản phẩm"
-                        required
-                        rules={[rulesHelper.requiredRule]}
-                    />
-                </ProFormGroup> */}
+                <FormSupplierPresentation />
             </ProForm>
         </Content>
     );

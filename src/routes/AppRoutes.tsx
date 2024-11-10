@@ -6,6 +6,8 @@ import { lazy } from "react";
 // Page
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
 const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPage.tsx"));
+const CreateProviderPage = lazy(() => import("@/views/Provider/CreateProviderPage"));
+
 const AccountPage = lazy(() => import("@/views/Account/AccountPage.tsx"));
 const LoginPage = lazy(() => import("@/views/Login/LoginPage.tsx"));
 const CategoryPage = lazy(() => import("@/views/Category/index.tsx"));
@@ -59,8 +61,14 @@ const AppRoutes: React.FunctionComponent = () => {
                         <ProtectedRoute children={<ProviderPage />} />
                     }
                 />
+                <Route 
+                    path="provider/create"
+                    element={
+                        <ProtectedRoute children={<CreateProviderPage />} />
+                    }
+                />
                 <Route
-                    path="provider/:id/:action?"
+                    path="provider/:id/:action"
                     element={
                         <ProtectedRoute children={<ProviderDetailPage />} />
                     }

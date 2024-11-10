@@ -1,5 +1,5 @@
 import Constants from "@/helpers/constVariable";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space, Typography } from "antd";
 import dayjs from "dayjs";
@@ -7,10 +7,12 @@ import { SupplierModel } from "../types/supplierModels";
 
 type ColumnsType = (props: {
     onUpdateSupplier: (supplierId: string) => void;
+    onViewSupplier: (supplierId: string) => void;
 }) => ProColumns<SupplierModel>[];
 
 const useColumnsTableProvider: ColumnsType = ({
-    onUpdateSupplier   
+    onUpdateSupplier,
+    onViewSupplier  
 }) => {
     return [
         {
@@ -74,6 +76,11 @@ const useColumnsTableProvider: ColumnsType = ({
                         icon={<EditOutlined />} 
                         className="border-none"
                         onClick={() => onUpdateSupplier(entity.id)}
+                    />
+                    <Button
+                        icon={<EyeOutlined />}
+                        className="border-none"
+                        onClick={() => onViewSupplier(entity.id)}
                     />
                 </Space>
             )

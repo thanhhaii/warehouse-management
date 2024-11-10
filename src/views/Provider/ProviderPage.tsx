@@ -10,14 +10,19 @@ import { useCallback } from "react";
 import apiService from "@/services/apiService/apiService";
 import { GetListSupplierResponse } from "./types/supplierModels";
 import { buildMetricFilter } from "@/helpers/objectHelper";
+import { ActionEnum } from "@/enums/commonEnum";
 
 const ProviderPage: React.FunctionComponent = () => {
     const navigate = useNavigate();
 
     const handleUpdateSupplier = useCallback((supplierID: string) => { 
-        navigate(`/provider/${supplierID}/update`);
+        navigate(`/provider/${supplierID}/${ActionEnum.UPDATE}`);
     }, []);
 
+    const handleViewSupplier = useCallback((supplierID: string) => { 
+        navigate(`/provider/${supplierID}/${ActionEnum.VIEW}`);
+    }, []);
+    
     const request = useCallback(async ({ current, pageSize, id, code, name, phone }: any) => {        
         const resp = await apiService.getListSupplier<GetListSupplierResponse>({
             desc: false,
@@ -42,7 +47,8 @@ const ProviderPage: React.FunctionComponent = () => {
         <ProTable 
             request={request}
             columns={useColumnsTableProvider({
-                onUpdateSupplier: handleUpdateSupplier
+                onUpdateSupplier: handleUpdateSupplier,
+                onViewSupplier: handleViewSupplier
             })}
             rowKey="id"
             size="small"
