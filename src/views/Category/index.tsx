@@ -5,8 +5,11 @@ import useColumnsTableCategory from "./hooks/useColumnsTableCategory";
 import { CategoryItem } from "./types/categoryModels";
 import apiService from "@/services/apiService/apiService";
 import { buildMetricFilter } from "@/helpers/objectHelper";
+import { App } from "antd";
 
 const CategoryPage: React.FunctionComponent = () => {
+    const { message } = App.useApp();
+
     // States
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [categorySelected, setCategorySelected] = useState<CategoryItem>();
@@ -16,6 +19,16 @@ const CategoryPage: React.FunctionComponent = () => {
     const handleUpdateCategory = useCallback((category: CategoryItem) => {
         setOpenModal(true);
         setCategorySelected(category);
+    }, []);
+
+    const handleDeleteCategory = useCallback(async (category: CategoryItem) => { 
+        try { 
+            const resp = await apiService.deleteCategory(category.id);
+            console.log({ resp });
+            message.error('Xoá dan mục thành công!');
+        } catch {
+            message.error('Có lỗi khi xoá danh mục!');
+        }
     }, []);
 
     const handleOpenChange = useCallback((open: boolean) => {
@@ -49,7 +62,8 @@ const CategoryPage: React.FunctionComponent = () => {
             <ProTable
                 rowKey="id"
                 columns={useColumnsTableCategory({
-                    onUpdate: handleUpdateCategory
+                    onUpdate: handleUpdateCategory,
+                    onDelete: handleDeleteCategory,
                 })}
                 search={{
                     labelWidth: 'auto'

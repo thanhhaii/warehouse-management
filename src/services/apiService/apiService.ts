@@ -114,6 +114,17 @@ class ApiService implements APIServiceImpl{
         return resp.data;
     }
 
+    async deleteCategory(categoryId: number): Promise<{
+        data: any,
+        message: string,
+    }> {
+        const resp = await this.axiosInstance.delete(
+            `/user/category/${categoryId}`,
+        );
+
+        return resp.data;
+    }
+
     // Supplier
     async createSupplier<T = any>(payload: T): Promise<any> {
         const resp = await this.axiosInstance.post(

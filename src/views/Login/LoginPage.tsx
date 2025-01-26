@@ -10,22 +10,22 @@ import { useAppDispatch, useAppSelector } from "@/states/hooks.ts";
 import { selectUserIsSignedIn } from "@/states/selectors/authSelector";
 import { useLoginMutation } from "@/states/services/authentication";
 
-const LoginPage: React.FunctionComponent = () => {    
+const LoginPage: React.FunctionComponent = () => {
     // Hooks
     const [form] = ProForm.useForm();
     const dispatch = useAppDispatch();
     const isLogin = useAppSelector(selectUserIsSignedIn);
-    const [login] = useLoginMutation();
+    const [login, { isError }] = useLoginMutation();
 
     // Handler
-    const handleFinish = useCallback(async (value: LoginFormType) => {        
+    const handleFinish = useCallback(async (value: LoginFormType) => {
         await login({
             password: value.password,
             username: value.username
-        });        
-    }, [dispatch, login]);    
+        });
+    }, [dispatch, login]);
 
-    const handleKeyUp = useCallback((event: any) => {        
+    const handleKeyUp = useCallback((event: any) => {
         if (event.keyCode === 13) {
             form.submit();
         }
@@ -42,7 +42,7 @@ const LoginPage: React.FunctionComponent = () => {
                     <ProCard
                         title={<h1 className="text-2xl">Đăng Nhập</h1>}
                         className="shadow-lg !rounded-xl">
-                        <ProForm<LoginFormType>                            
+                        <ProForm<LoginFormType>
                             submitter={{
                                 resetButtonProps: false,
                                 searchConfig: {
@@ -55,9 +55,16 @@ const LoginPage: React.FunctionComponent = () => {
                                 }
                             }}
                             form={form}
-                            onFinish={handleFinish}                            
+                            onFinish={handleFinish}
                             onKeyUp={handleKeyUp}
                         >
+                            {isError && (
+                                <div className="p-2 rounded-lg bg-red-200 mb-3">
+                                    <p className="mb-0 text-xs text-red-600 font-bold">
+                                        Tên tài khoản hoặc mật khẩu không chính xác!
+                                    </p>
+                                </div>
+                            )}
                             <ProFormText
                                 label="Tên tài khoản"
                                 name="username"

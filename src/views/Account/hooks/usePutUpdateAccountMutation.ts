@@ -6,9 +6,11 @@ import { AxiosResponse } from "axios";
 import apiService from "@/services/apiService/apiService.ts";
 import { UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
+import { App } from "antd";
 
 const usePostCreateAccountMutation = (): UseMutationResult<AxiosResponse<AccountModel>, any, UpdateAccountModel> => {
     const queryClient = useQueryClient();
+    const { message } = App.useApp();
 
     return useMutation({
         mutationFn: (args: UpdateAccountModel) => {
@@ -16,6 +18,7 @@ const usePostCreateAccountMutation = (): UseMutationResult<AxiosResponse<Account
         },
         mutationKey: ['updateAccountMutation'],
         onSuccess: (data) => {
+            message.info('Cập nhật thông tin tài khoản thành công!');
             if(data.status === 200){
                 queryClient.invalidateQueries({
                     queryKey: ['findAllUser']

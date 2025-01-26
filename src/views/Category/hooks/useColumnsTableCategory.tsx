@@ -2,15 +2,17 @@ import { ProColumns } from "@ant-design/pro-components";
 import { CategoryItem } from "../types/categoryModels";
 import dayjs from "dayjs";
 import Constants from "@/helpers/constVariable";
-import { Button } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Button, Popconfirm } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 type ColumnsType = (props: { 
-    onUpdate: (category: CategoryItem) => void
+    onUpdate: (category: CategoryItem) => void;
+    onDelete: (category: CategoryItem) => Promise<void>;
 }) => ProColumns<CategoryItem>[];
 
 const useColumnsTableCategory: ColumnsType = ({
-    onUpdate
+    onUpdate,
+    onDelete
 }) => [
     {
         title: 'Mã danh mục',
@@ -54,7 +56,24 @@ const useColumnsTableCategory: ColumnsType = ({
         fixed: 'right',
         width: 100,
         render: (_, category) => [
-            <Button key="update" icon={<EditOutlined />} onClick={() => onUpdate(category)} />
+            <Button 
+                className="border-none" 
+                key="update" 
+                icon={<EditOutlined />} 
+                onClick={() => onUpdate(category)} 
+            />,
+            <Popconfirm
+                title="Xoá danh mục"
+                description="Bạn không thể hoàn tác hành động này sau khi xác nhận!"
+                onConfirm={() => onDelete(category)}
+                key="delete" 
+            >
+                <Button 
+                    className="border-none mx-2"                      
+                    icon={<DeleteOutlined />} 
+                    danger 
+                />
+            </Popconfirm>
         ]
     }
 ];

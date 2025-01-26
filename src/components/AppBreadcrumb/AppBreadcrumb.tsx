@@ -56,6 +56,8 @@ const AppBreadcrumb: React.FunctionComponent = () => {
         );
     }, []);
 
+    return <></>;
+
     return (
         <Content className="mb-4 bg-white p-5 rounded-lg">
             <Breadcrumb 
