@@ -1,5 +1,5 @@
 import { MenuDataItem } from "@ant-design/pro-components";
-import { DashboardOutlined, FileOutlined, FileTextOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, FileOutlined, FileTextOutlined, UsergroupAddOutlined, } from "@ant-design/icons";
 
 export const defaultMenuItems: MenuDataItem[] = [
     {
@@ -32,7 +32,7 @@ export const defaultMenuItems: MenuDataItem[] = [
     },
     {
         name: 'Tài khoản',
-        icon: <UserOutlined />,
+        icon: <UsergroupAddOutlined />,
         path: `/account`,
     },
 ];

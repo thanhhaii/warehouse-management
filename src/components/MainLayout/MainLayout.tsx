@@ -26,14 +26,20 @@ const MainLayout: React.FunctionComponent = () => {
                 render: (_, dom) => (
                     <Dropdown
                         menu={{
-                            items: [{
-                                key: 'logout',
-                                icon: <LogoutOutlined />,
-                                label: 'Logout',
-                                onClick: () => {
-                                    dispatch(authActions.logout());
-                                }
-                            }]
+                            items: [
+                                {
+                                    key: 'profile',
+                                    icon: <UserOutlined />,
+                                    label: <NavLink to="/profile">Thông tin tài khoản</NavLink>,
+                                },
+                                {
+                                    key: 'logout',
+                                    icon: <LogoutOutlined />,
+                                    label: 'Logout',
+                                    onClick: () => {
+                                        dispatch(authActions.logout());
+                                    }
+                                }]
                         }}
                         children={dom}
                     />

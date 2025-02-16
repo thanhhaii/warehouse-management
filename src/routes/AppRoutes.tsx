@@ -9,6 +9,7 @@ const ProviderDetailPage = lazy(() => import("@/views/Provider/ProviderDetailPag
 const CreateProviderPage = lazy(() => import("@/views/Provider/CreateProviderPage"));
 
 const AccountPage = lazy(() => import("@/views/Account/AccountPage.tsx"));
+const ProfilePage = lazy(() => import("@/views/Profile/ProfilePage"));
 const LoginPage = lazy(() => import("@/views/Login/LoginPage.tsx"));
 const CategoryPage = lazy(() => import("@/views/Category/index.tsx"));
 
@@ -16,6 +17,10 @@ const CategoryPage = lazy(() => import("@/views/Category/index.tsx"));
 const ProductPage = lazy(() => import("@/views/Product/ProductPage.tsx"));
 const UpdateProductPage = lazy(() => import("@/views/Product/UpdateProductPage.tsx"));
 const CreateProductPage = lazy(() => import("@/views/Product/CreateProductPage"));
+
+// Invoice page
+const CreateInvoicePage = lazy(() => import("@/views/Invoice/CreateInvoicePage"));
+const InvoiceManagementPage = lazy(() => import("@/views/Invoice/InvoiceManagementPage"));
 
 const AppRoutes: React.FunctionComponent = () => {
     return (
@@ -82,7 +87,19 @@ const AppRoutes: React.FunctionComponent = () => {
                 <Route
                     path="invoice"
                     element={
-                        <ProtectedRoute children={<h1>Invoice /</h1>} />
+                        <ProtectedRoute children={<InvoiceManagementPage />} />
+                    }
+                />
+                <Route
+                    path="invoice/create"
+                    element={
+                        <ProtectedRoute children={<CreateInvoicePage />} />
+                    }
+                />
+                <Route 
+                    path="profile"
+                    element={
+                        <ProtectedRoute children={<ProfilePage />} />
                     }
                 />
             </Route>

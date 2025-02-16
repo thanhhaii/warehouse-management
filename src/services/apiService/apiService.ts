@@ -1,11 +1,12 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { GetAllUserRequest, GetListFilterPayload, LoginRequest } from "@/services/apiService/requestTypes.ts";
-import { GetAllUserResponse, LoginResponse } from "@/services/apiService/responseTypes.ts";
+import { GetAllUserResponse, GetListResponseBase, LoginResponse, ResponseBase } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import { GetListCategoryFilter, GetListCategoryResponse } from "@/views/Category/types/categoryModels";
 import { GetListSupplierResponse, UpdateSupplierPayload } from "@/views/Provider/types/supplierModels";
 import { CreateProductPayload, CreateProductResponse, GetDetailProductResponse, GetListProductResponse } from "@/views/Product/types/productModels";
+import { InvoiceFormType } from "@/views/Invoice/types/invoiceData";
 
 interface APIServiceImpl {
     getUser: (request: GetAllUserRequest) => Promise<GetAllUserResponse>;
@@ -188,6 +189,25 @@ class ApiService implements APIServiceImpl{
     async getDetailProduct(productId: string): Promise<GetDetailProductResponse>{
         const resp = await this.axiosInstance.get(
             `/user/product/${productId}`
+        );
+
+        return resp.data;
+    }
+
+    // Order API
+    async createOrder(payload: InvoiceFormType): Promise<ResponseBase> {
+        const response = await this.axiosInstance.post(
+            '/order/create',
+            payload,
+        );
+
+        return response.data;
+    }
+
+    async getListOrder(filter: GetListFilterPayload): Promise<GetListResponseBase> {
+        const resp = await this.axiosInstance.post(
+            '/order/list',
+            filter
         );
 
         return resp.data;

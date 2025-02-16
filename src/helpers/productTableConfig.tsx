@@ -1,10 +1,11 @@
 import { ProColumns } from "@ant-design/pro-components";
 import { ProductItem } from "@/views/Product/types/productModels.ts";
-import { formatConcurrency, formatTime } from "./numberHelper";
+import { formatConcurrency } from "./numberHelper";
 import { Button, Space, Typography } from "antd";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { ActionEnum } from "@/enums/commonEnum";
+import dayjs from "dayjs";
 
 export const productTableConfig: ProColumns<ProductItem>[] = [
     {
@@ -31,7 +32,7 @@ export const productTableConfig: ProColumns<ProductItem>[] = [
     },
     {
         title: 'Số lượng',
-        dataIndex: ['quantity', 'value'],
+        dataIndex: 'stockQuantity',
         align: 'right',
         search: false,
     },
@@ -54,7 +55,7 @@ export const productTableConfig: ProColumns<ProductItem>[] = [
         title: 'Ngày tạo',
         dataIndex: 'createDate',
         align: 'center',
-        renderText: (value) => formatTime(value),
+        renderText: (value) => dayjs(value).format('DD/MM/YYYY HH:mm:ss'),
         search: false,
     },
     {

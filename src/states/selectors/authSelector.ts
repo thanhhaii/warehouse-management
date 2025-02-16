@@ -24,3 +24,5 @@ export const selectUserIsSignedIn = createSelector(
 export const selectNameOfuser = createSelector(getAuthReducer, (state) => {
     return stringHelpers.getDataFormToken(state.token)?.sub;
 });
+
+// export const selectCurrent

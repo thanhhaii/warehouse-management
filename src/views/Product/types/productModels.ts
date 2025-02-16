@@ -47,6 +47,7 @@ export type ProductSupplier = {
 export type ProductItem = {
     id: string;
     createDate: number;
+    description?: string;
     lastModifiedDate: number;
     createdBy: string;
     name: string;
@@ -55,4 +56,5 @@ export type ProductItem = {
     quantity: ProductQuantity;
     category: ProductCategory;
     supplier: ProductSupplier;
+    stockQuantity: number;
 };

@@ -7,3 +7,19 @@ export type LoginResponse = {
     tokenExpire: string;
     error: any;
 };
+
+export type ResponseBase<T = any> = {
+    message: string;
+    data: T;
+};
+
+export type GetListResponseBase<T = any> = {
+    message: string;
+    data: {
+        data: T[];
+        pageSize: number;
+        totalItems: number;
+        hasNext: boolean;
+        totalPage: number;
+    }
+};
