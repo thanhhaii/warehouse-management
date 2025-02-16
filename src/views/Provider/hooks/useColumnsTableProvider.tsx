@@ -36,7 +36,7 @@ const useColumnsTableProvider: ColumnsType = ({
         },
         {
             title: 'Mã nhà cung cấp',
-            dataIndex: 'code',
+            dataIndex: 'supplierCode',
             copyable: true,            
         },
         {
@@ -51,7 +51,7 @@ const useColumnsTableProvider: ColumnsType = ({
         {
             title: 'Ngày tạo',
             dataIndex: 'createDate',
-            renderText: (value: number) => dayjs(value * 1000).format(Constants.defaultFormatDateTime),
+            renderText: (value) => dayjs(value).format('DD/MM/YYYY HH:mm:ss'),
             align: 'center',
             search: false,
         },

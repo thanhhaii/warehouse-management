@@ -57,4 +57,5 @@ export type ProductItem = {
     category: ProductCategory;
     supplier: ProductSupplier;
     stockQuantity: number;
+    imageUrl: string;
 };

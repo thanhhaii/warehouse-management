@@ -6,16 +6,21 @@ import ConfigProductsForm from './components/ConfigProductsForm';
 import { invoiceFormInitialValue } from './helpers/invoiceDataHelper';
 import { InvoiceFormType } from './types/invoiceData';
 import apiService from '@/services/apiService/apiService';
+import { useNavigate } from 'react-router-dom';
 
 const CreateInvoicePage: React.FunctionComponent = () => {
     const [form] = ProForm.useForm<InvoiceFormType>();
+    const navigate = useNavigate();
 
     const handleRequest = useCallback(async() => {
         return invoiceFormInitialValue;
     },[]);
 
     const handleFinish = useCallback(async (values: InvoiceFormType) => {
-        apiService.createOrder(values);
+        const resp = await apiService.createOrder(values);
+        if(resp?.message.toLowerCase() === "success") {
+            navigate('/invoice', { replace: true });
+        }
     }, []);
 
     return (
@@ -44,6 +49,7 @@ const CreateInvoicePage: React.FunctionComponent = () => {
                         placeholder="Nhập tên khách hàng"
                         required
                         width="xl"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng' }]}
                     />
                     <ProFormText 
                         name="phone"
@@ -51,18 +57,26 @@ const CreateInvoicePage: React.FunctionComponent = () => {
                         placeholder="Nhập số điện thoại"
                         required
                         width="xl"
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập số điện thoại' },
+                            { pattern: /^0[0-9]{9}$/, message: 'Số điện thoại không hợp lệ' }
+                        ]}
                     />
                     <ProFormTextArea 
                         name="deliveryAddress"
                         label="Địa chỉ"
                         placeholder="Nhập địa chỉ"
-                        required
                         width="xl"
                     />
                 </ProFormGroup>
                 <ProFormGroup
                     collapsible
                     title="Chi tiết đơn hàng">
+                    <ProFormTextArea
+                        name="description"
+                        label="Mô tả đơn hàng"
+                        width="lg"
+                    />
                     <ProFormDigit 
                         name="discount"
                         label="Phần trăm giảm giá"

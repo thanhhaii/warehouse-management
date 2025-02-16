@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import './App.css';
 import AppRoutes from "./routes/AppRoutes.tsx";
 import { persistor, store } from "@/states/configStore.ts";
+import { Suspense } from "react";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -22,17 +23,19 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <AntdApp>
-                    <QueryClientProvider client={queryClient}>
-                        <ConfigProvider locale={vi_VN}>
-                            <AppRoutes />
-                        </ConfigProvider>
-                    </QueryClientProvider>
-                </AntdApp>
-            </PersistGate>
-        </Provider>
+        <Suspense fallback={<></>}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <AntdApp>
+                        <QueryClientProvider client={queryClient}>
+                            <ConfigProvider locale={vi_VN}>
+                                <AppRoutes />
+                            </ConfigProvider>
+                        </QueryClientProvider>
+                    </AntdApp>
+                </PersistGate>
+            </Provider>
+        </Suspense>
     );
 }
 

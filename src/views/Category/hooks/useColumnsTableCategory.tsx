@@ -1,7 +1,6 @@
 import { ProColumns } from "@ant-design/pro-components";
 import { CategoryItem } from "../types/categoryModels";
 import dayjs from "dayjs";
-import Constants from "@/helpers/constVariable";
 import { Button, Popconfirm } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
@@ -40,14 +39,14 @@ const useColumnsTableCategory: ColumnsType = ({
         align: 'center',
         dataIndex: 'createDate',
         search: false,
-        renderText: (value: number) => dayjs(value * 1000).format(Constants.defaultFormatDateTime)
+        renderText: (value) => dayjs(value).format('DD/MM/YYYY HH:mm:ss'),
     },
     {
         title: 'Lần chỉnh sửa cuối cùng',
         align: 'center',
         dataIndex: 'lastModifiedDate',
         search: false,
-        renderText: (value: number) => dayjs(value * 1000).format(Constants.defaultFormatDateTime)
+        renderText: (value) => dayjs(value).format('DD/MM/YYYY HH:mm:ss'),
     },
     {
         title: 'Hành động',

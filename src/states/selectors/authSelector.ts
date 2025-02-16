@@ -8,11 +8,11 @@ const getAuthReducer = (appStates: IRootState) => appStates.authReducer;
 export const selectUserIsSignedIn = createSelector(
     getAuthReducer,
     (state) => {        
-        if(!state.token || !state.isSignedIn){
+        if(!state?.token || !state?.isSignedIn){
             return false;
         }
 
-        const data = stringHelpers.getDataFormToken(state.token);
+        const data = stringHelpers.getDataFormToken(state?.token);
         if(dayjs().valueOf() < (data?.exp * 1000)) {
             return true;
         }

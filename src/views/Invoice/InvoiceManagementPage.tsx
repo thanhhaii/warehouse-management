@@ -5,15 +5,25 @@ import { ProTable } from "@ant-design/pro-components";
 import { Button } from "antd";
 import { useCallback } from "react";
 import { NavLink } from "react-router-dom";
+import useColumnsTableCategory from "./hooks/useColumnInvoice";
 
 const InvoiceManagementPage: React.FunctionComponent = () => { 
     const request = useCallback(async ({
         current, 
         pageSize,
+        orderId,
+        customerName,
+        customerPhone,
+        customerAddress,
     }: Record<string, any>) => {
         const resp = await apiService.getListOrder({
             desc: false,
-            metricFilters: buildMetricFilter({}),
+            metricFilters: buildMetricFilter({
+                orderId,
+                customerName,
+                customerPhone,
+                customerAddress,
+            }),
             pageNumber: current - 1,
             pageSize: pageSize || 10,
             sortField: 'createDate'
@@ -36,7 +46,15 @@ const InvoiceManagementPage: React.FunctionComponent = () => {
                         key="add_order">Tạo hoá đơn mới</Button>
                 </NavLink>
             ]}
-            request={request} />
+            columns={useColumnsTableCategory({})}
+            request={request}
+            pagination={{
+                hideOnSinglePage: true
+            }}
+            search={{
+                labelWidth: 'auto'
+            }}
+        />
     );
 };
 
