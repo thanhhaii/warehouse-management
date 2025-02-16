@@ -3,11 +3,11 @@ import { AccountRole } from "@/enums/accountEnums.ts";
 export const defaultOptionsRole = [
     {
         label: 'Quản trị viên',
-        value: AccountRole.ADMIN_ROLE
+        value: AccountRole.ADMIN_ROLE.replace('ROLE_', '')
     },
     {
         label: 'Nhân viên',
-        value: AccountRole.STAFF_ROLE
+        value: AccountRole.STAFF_ROLE.replace('ROLE_', '')
     }
 ];
 
