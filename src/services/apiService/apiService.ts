@@ -25,15 +25,14 @@ class ApiService implements APIServiceImpl{
 
         this.axiosInstance.interceptors.request.use(function (config) {
             // Do something before request is sent
-            const persistAuth = JSON.parse(localStorage.getItem('persist:root' ) || '{}');
-            const token = persistAuth?.authReducer;
+            const persistAuth = JSON.parse(localStorage.getItem('persist:auth' ) || '{}');
 
-            if(token?.isSignedIn && token?.token) {
+            if(persistAuth?.isSignedIn && persistAuth?.token) {
                 return  {
                     ...config, 
                     headers: {
                         ...config.headers,
-                        Authorization: `Bearer ${token?.token}`
+                        Authorization: `Bearer ${persistAuth?.token.replace(/"/g, '')}`
                     }
                 } as any;
             }
@@ -43,6 +42,26 @@ class ApiService implements APIServiceImpl{
             };
         }, function (error) {
             // Do something with request error
+            return Promise.reject(error);
+        });
+
+        this.axiosInstance.interceptors.response.use(function (response) {
+            // Do something with response data
+            return response;
+        }, function (error) {
+            // Do something with response error
+            return Promise.reject(error);
+        });
+    }
+
+    injectInterceptorResponse(onUnauthorized: () => void): any {
+        this.axiosInstance.interceptors.response.use(function (response) {
+            if(response.status === 401) {
+                onUnauthorized();
+            }
+            return response;
+        }, function (error) {
+            // Do something with response error
             return Promise.reject(error);
         });
     }

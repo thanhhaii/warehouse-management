@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import MainLayout from "@/components/MainLayout/MainLayout.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
 import { lazy } from "react";
+import useAxiosInterceptor from "@/hooks/useAxiosInterceptor";
 
 // Page
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
@@ -23,6 +24,8 @@ const CreateInvoicePage = lazy(() => import("@/views/Invoice/CreateInvoicePage")
 const InvoiceManagementPage = lazy(() => import("@/views/Invoice/InvoiceManagementPage"));
 
 const AppRoutes: React.FunctionComponent = () => {
+    useAxiosInterceptor();
+
     return (
         <Routes>
             <Route
