@@ -10,4 +10,5 @@ export type InvoiceFormType = Partial<{
     deliveryAddress: string;
     discount: number;
     orderProducts: Partial<ProductOrderType>[];
+    description: string;
 }>;

@@ -7,7 +7,7 @@ const getAuthReducer = (appStates: IRootState) => appStates.authReducer;
 
 export const selectUserIsSignedIn = createSelector(
     getAuthReducer,
-    (state) => {        
+    (state) => {
         if(!state?.token || !state?.isSignedIn){
             return false;
         }
@@ -21,7 +21,7 @@ export const selectUserIsSignedIn = createSelector(
     }
 );
 
-export const selectNameOfuser = createSelector(getAuthReducer, (state) => {
+export const selectNameOfUser = createSelector(getAuthReducer, (state) => {
     return stringHelpers.getDataFormToken(state.token)?.sub;
 });
 

@@ -1,7 +1,7 @@
 // Vendor
 import { Col, Row } from "antd";
 import { ProCard, ProForm, ProFormText } from "@ant-design/pro-components";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Navigate } from "react-router-dom";
 
 // Src
@@ -32,16 +32,24 @@ const LoginPage: React.FunctionComponent = () => {
     }, [form]);
 
     if(isLogin){
-        return <Navigate to="/" replace />;
+        return (
+            <Navigate to="/"
+                replace
+            />
+        );
     }
 
     return (
         <div className="h-dvh w-dvw">
             <Row className="w-full h-full justify-center items-center">
-                <Col span={18} sm={12} md={6}>
+                <Col span={18}
+                    sm={12}
+                    md={6}
+                >
                     <ProCard
                         title={<h1 className="text-2xl">Đăng Nhập</h1>}
-                        className="shadow-lg !rounded-xl">
+                        className="shadow-lg !rounded-xl"
+                    >
                         <ProForm<LoginFormType>
                             submitter={{
                                 resetButtonProps: false,

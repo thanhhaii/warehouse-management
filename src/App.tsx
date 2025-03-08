@@ -25,7 +25,9 @@ function App() {
     return (
         <Suspense fallback={<></>}>
             <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
+                <PersistGate loading={null}
+                    persistor={persistor}
+                >
                     <AntdApp>
                         <QueryClientProvider client={queryClient}>
                             <ConfigProvider locale={vi_VN}>

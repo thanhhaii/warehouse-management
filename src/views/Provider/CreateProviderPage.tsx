@@ -9,11 +9,11 @@ import usePostCreateSupplierMutation from "./hooks/usePostCreateSupplierMutation
 import FormSupplierPresentation from "./components/FormSupplierPresentation";
 import { FormCreateSupplier } from "./types/supplierModels";
 import { useAppSelector } from "@/states/hooks";
-import { selectNameOfuser } from "@/states/selectors/authSelector";
+import { selectNameOfUser } from "@/states/selectors/authSelector";
 
 const CreateProviderPage: React.FunctionComponent = () => {
     const [form] = ProForm.useForm<FormCreateSupplier>();
-    const nameOfCurrentUser = useAppSelector(selectNameOfuser);
+    const nameOfCurrentUser = useAppSelector(selectNameOfUser);
     const createSupplierMutation = usePostCreateSupplierMutation();
     const navigate = useNavigate();
 

@@ -7,7 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 // Src
-import { authenApi } from './services/authentication';
+import { authApi } from './services/authentication';
 import rootReducer from './rootReducer';
 
 const persistConfig: PersistConfig<any, any> = {
@@ -17,7 +17,7 @@ const persistConfig: PersistConfig<any, any> = {
     blacklist: ['authenticationAPI', 'authReducer']
 };
 
-export const authPersistConfig: PersistConfig<any, any> = { 
+export const authPersistConfig: PersistConfig<any, any> = {
     key: 'auth',
     storage,
     stateReconciler: autoMergeLevel2,
@@ -27,10 +27,10 @@ export const persistedReducer = persistReducer(persistConfig, rootReducer());
 
 export const store = configureStore({
     reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) => 
+    middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false
-        }).concat(authenApi.middleware)
+        }).concat(authApi.middleware)
 });
 
 setupListeners(store.dispatch);

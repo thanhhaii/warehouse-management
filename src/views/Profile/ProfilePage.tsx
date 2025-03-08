@@ -1,13 +1,26 @@
-import { useAppSelector } from '@/states/hooks';
 import { ProCard } from '@ant-design/pro-components';
-import React from 'react';
+import { Descriptions } from 'antd';
+import React, { lazy } from 'react';
+
+const ModalChangePassword = lazy(() => import('./components/ModalChangePassword'));
 
 const ProfilePage: React.FunctionComponent = () => {
-    // const user = useAppSelector(select)
-
     return (
-        <ProCard title="Thông tin tài khoản">
-
+        <ProCard
+            extra={<ModalChangePassword />}
+            title="Thông tin tài khoản"
+        >
+            <Descriptions
+                items={[
+                    { label: 'Họ và tên', children: '' },
+                    { label: 'Email', children: '' },
+                    { label: 'Số điện thoại', children: '' },
+                    { label: 'Địa chỉ', children: '' },
+                    { label: 'Ngày sinh', children: '' },
+                    { label: 'Giới tính', children: '' },
+                    { label: 'Quyền', children: '' },
+                ]}
+            />
         </ProCard>
     );
 };

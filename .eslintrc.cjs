@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
   ],
   ignorePatterns: [
     'dist',
@@ -28,6 +29,10 @@ module.exports = {
     '@typescript-eslint/semi': 'warn',
     '@typescript-eslint/no-explicit-any': 'off',
     'react-hooks/exhaustive-deps': 'off',
-    'object-curly-spacing': ['warn', 'always']
+    'object-curly-spacing': ['warn', 'always'],
+    'no-trailing-spaces': 'warn',
+    'react/jsx-max-props-per-line': ['warn', { "maximum": 1 }],
+    'react/jsx-closing-bracket-location': ['warn', 'tag-aligned'],
+    'react/react-in-jsx-scope': 'off',
   }
 }

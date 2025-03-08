@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { GetAllUserRequest, GetListFilterPayload, LoginRequest } from "@/services/apiService/requestTypes.ts";
+import { ChangePasswordPayload, GetAllUserRequest, GetListFilterPayload, LoginRequest } from "@/services/apiService/requestTypes.ts";
 import { GetAllUserResponse, GetListResponseBase, LoginResponse, ResponseBase } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
@@ -29,7 +29,7 @@ class ApiService implements APIServiceImpl{
 
             if(persistAuth?.isSignedIn && persistAuth?.token) {
                 return  {
-                    ...config, 
+                    ...config,
                     headers: {
                         ...config.headers,
                         Authorization: `Bearer ${persistAuth?.token.replace(/"/g, '')}`
@@ -95,7 +95,7 @@ class ApiService implements APIServiceImpl{
         );
     }
 
-    async login(payload: LoginRequest): Promise<LoginResponse> { 
+    async login(payload: LoginRequest): Promise<LoginResponse> {
         const resp = await this.axiosInstance.post<LoginResponse>(
             '/auth/login',
             payload
@@ -156,7 +156,7 @@ class ApiService implements APIServiceImpl{
     }
 
     async getListSupplier<T = GetListSupplierResponse>(filter: GetListFilterPayload): Promise<T> {
-        const resp = await this.axiosInstance.post<T>( 
+        const resp = await this.axiosInstance.post<T>(
             '/user/supplier/list',
             filter
         );
@@ -174,7 +174,7 @@ class ApiService implements APIServiceImpl{
 
     async updateSupplier(payload: UpdateSupplierPayload): Promise<any>{
         const resp = await this.axiosInstance.post(
-            '/user/supplier/update', 
+            '/user/supplier/update',
             payload,
             {
                 params: {
@@ -227,6 +227,20 @@ class ApiService implements APIServiceImpl{
         const resp = await this.axiosInstance.post(
             '/order/list',
             filter
+        );
+
+        return resp.data;
+    }
+
+    async changePassword(payload: ChangePasswordPayload): Promise<ResponseBase> {
+        const resp = await this.axiosInstance.put(
+            '/auth/change-password',
+            payload,
+            {
+                validateStatus: (status) => {
+                    return status === 202;
+                }
+            }
         );
 
         return resp.data;

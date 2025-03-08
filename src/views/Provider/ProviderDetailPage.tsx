@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // Src
 import { GetDetailSupplierResponse, SupplierModel } from "./types/supplierModels";
 import { useAppSelector } from "@/states/hooks";
-import { selectNameOfuser } from "@/states/selectors/authSelector";
+import { selectNameOfUser } from "@/states/selectors/authSelector";
 import apiService from "@/services/apiService/apiService";
 import { ActionEnum } from "@/enums/commonEnum";
 import FormSupplierPresentation from "./components/FormSupplierPresentation";
@@ -17,7 +17,7 @@ const ProviderDetailPage: React.FunctionComponent = () => {
     const { id, action } = useParams<{id: string, action: ActionEnum}>();
     const { notification } = App.useApp();
     const [initData, setInitData] = useState<SupplierModel>();
-    const nameOfCurrentUser = useAppSelector(selectNameOfuser);
+    const nameOfCurrentUser = useAppSelector(selectNameOfUser);
     const [form] = ProForm.useForm<Partial<SupplierModel>>();
     const navigate = useNavigate();
     const updateSupplierMutation = usePatchUpdateSupplierMutation();

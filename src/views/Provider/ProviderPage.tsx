@@ -15,15 +15,15 @@ import { ActionEnum } from "@/enums/commonEnum";
 const ProviderPage: React.FunctionComponent = () => {
     const navigate = useNavigate();
 
-    const handleUpdateSupplier = useCallback((supplierID: string) => { 
+    const handleUpdateSupplier = useCallback((supplierID: string) => {
         navigate(`/provider/${supplierID}/${ActionEnum.UPDATE}`);
     }, []);
 
-    const handleViewSupplier = useCallback((supplierID: string) => { 
+    const handleViewSupplier = useCallback((supplierID: string) => {
         navigate(`/provider/${supplierID}/${ActionEnum.VIEW}`);
     }, []);
-    
-    const request = useCallback(async ({ current, pageSize, id, code, name, phone }: any) => {        
+
+    const request = useCallback(async ({ current, pageSize, id, code, name, phone }: any) => {
         const resp = await apiService.getListSupplier<GetListSupplierResponse>({
             desc: false,
             metricFilters: buildMetricFilter({
@@ -44,7 +44,7 @@ const ProviderPage: React.FunctionComponent = () => {
     }, []);
 
     return (
-        <ProTable 
+        <ProTable
             request={request}
             columns={useColumnsTableProvider({
                 onUpdateSupplier: handleUpdateSupplier,
@@ -71,12 +71,15 @@ const ProviderPage: React.FunctionComponent = () => {
                 labelWidth: 'auto'
             }}
             toolBarRender={() => [
-                <NavLink to="/provider/create" >
-                    <Button 
+                <NavLink to="/provider/create"
+                    key="create"
+                >
+                    <Button
                         icon={<PlusOutlined />}
-                        children="Thêm nhà cung cấp" 
                         type="primary"
-                    />
+                    >
+                        Thêm nhà cung cấp
+                    </Button>
                 </NavLink>
             ]}
         />

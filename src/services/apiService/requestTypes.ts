@@ -8,7 +8,7 @@ export type LoginRequest = {
     password: string;
 };
 
-export type GetListFilterPayload = { 
+export type GetListFilterPayload = {
     sortField: string;
     desc: boolean;
     pageSize: number;
@@ -17,4 +17,10 @@ export type GetListFilterPayload = {
         filterField: string;
         value: string;
     }[];
+};
+
+export type ChangePasswordPayload = {
+    userName: string
+    oldPassword: string
+    newPassword: string
 };

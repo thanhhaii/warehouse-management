@@ -1,25 +1,56 @@
 import { SaveOutlined } from '@ant-design/icons';
 import { ProCard, ProForm, ProFormDigit, ProFormGroup, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
-import { Button } from 'antd';
-import React, { useCallback } from 'react';
+import { App, Button } from 'antd';
+import React, { lazy, useCallback, useState } from 'react';
 import ConfigProductsForm from './components/ConfigProductsForm';
 import { invoiceFormInitialValue } from './helpers/invoiceDataHelper';
 import { InvoiceFormType } from './types/invoiceData';
 import apiService from '@/services/apiService/apiService';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError, isAxiosError } from 'axios';
+import { ResponseBase } from '@/services/apiService/responseTypes';
+
+const ModalPreviewInvoice = lazy(() => import('./components/ModalPreviewInvoice'));
 
 const CreateInvoicePage: React.FunctionComponent = () => {
+    const { notification } = App.useApp();
     const [form] = ProForm.useForm<InvoiceFormType>();
     const navigate = useNavigate();
+
+    const [isShowPreview, setShowPreview] = useState<boolean>(false);
 
     const handleRequest = useCallback(async() => {
         return invoiceFormInitialValue;
     },[]);
 
-    const handleFinish = useCallback(async (values: InvoiceFormType) => {
-        const resp = await apiService.createOrder(values);
-        if(resp?.message.toLowerCase() === "success") {
-            navigate('/invoice', { replace: true });
+    const handleFinish = useCallback(async () => {
+        setShowPreview(true);
+    }, []);
+
+    const handleCreateInvoice = useCallback(async () => {
+        const values = form.getFieldsValue(true);
+        try {
+            const resp = await apiService.createOrder(values);
+            if(resp?.message.toLowerCase() === "success") {
+                navigate('/invoice', { replace: true });
+                notification.success({
+                    message: 'Thành công',
+                    description: 'Tạo hoá đơn thành công!'
+                });
+            } else {
+                notification.error({
+                    message: 'Thất bại',
+                    description: `Tạo hoá đơn thất bại, vui lòng thử lại!. Lỗi: ${resp.message}`
+                });
+            }
+        } catch (err){
+            if(isAxiosError(err)) {
+                const error = err as AxiosError<ResponseBase>;
+                notification.error({
+                    message: 'Lỗi',
+                    description: `Có lỗi xảy ra khi tạo hoá đơn, vui lòng thử lại!. Lỗi: ${error.response?.data.message}`
+                });
+            }
         }
     }, []);
 
@@ -83,6 +114,13 @@ const CreateInvoicePage: React.FunctionComponent = () => {
                     />   
                 </ProFormGroup>
                 <ConfigProductsForm />
+                {isShowPreview && (
+                    <ModalPreviewInvoice
+                        open={isShowPreview}
+                        onClose={() => setShowPreview(false)}
+                        onSubmit={handleCreateInvoice}
+                    />
+                )}
             </ProForm>
         </ProCard>
     );

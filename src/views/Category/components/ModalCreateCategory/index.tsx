@@ -7,7 +7,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { CategoryItem } from "../../types/categoryModels";
 import usePostCreateCategoryMutation from "../../hooks/usePostCreateCategoryMutation";
 import { useAppSelector } from "@/states/hooks";
-import { selectNameOfuser } from "@/states/selectors/authSelector";
+import { selectNameOfUser } from "@/states/selectors/authSelector";
 import usePostUpdateCategroyMutation from "../../hooks/usePostUpdateCategroyMutation";
 
 type FormType = {
@@ -27,7 +27,7 @@ const ModalCreateCategory: React.FC<ModalCreateCategoryProps> = ({
     dataUpdate,
     onReloadList
 }) => { 
-    const nameOfCurrentUser = useAppSelector(selectNameOfuser);
+    const nameOfCurrentUser = useAppSelector(selectNameOfUser);
 
     const [form] = ProForm.useForm<FormType>();
     const createCategory = usePostCreateCategoryMutation();

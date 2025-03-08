@@ -7,7 +7,7 @@ import { LoginResponse } from "@/services/apiService/responseTypes";
 import { authActions } from "../slices/authSlice";
 import Config from "@/Config";
 
-export const authenApi = createApi({
+export const authApi = createApi({
     reducerPath: 'authenticationAPI',
     baseQuery: fetchBaseQuery({ baseUrl: Config.BACKEND_URL }),
     endpoints: (builder) => ({
@@ -28,7 +28,7 @@ export const authenApi = createApi({
     })
 });
 
-export const { useLoginMutation } = authenApi;
+export const { useLoginMutation } = authApi;
 
 
-export const { endpoints, reducerPath, reducer, middleware } = authenApi;
+export const { endpoints, reducerPath, reducer, middleware } = authApi;
