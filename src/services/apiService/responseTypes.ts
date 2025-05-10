@@ -2,7 +2,7 @@ import { AccountModel } from "@/types/accountModels.ts";
 
 export type GetAllUserResponse = AccountModel[];
 
-export type LoginResponse = { 
+export type LoginResponse = {
     token: string;
     tokenExpire: string;
     error: any;
@@ -23,3 +23,5 @@ export type GetListResponseBase<T = any> = {
         totalPage: number;
     }
 };
+
+export type GetUserProfileResponse = Pick<AccountModel, 'username' | 'fullName' | 'phoneNumber' | 'individualCard' | 'email'  | 'active' | 'address'>;

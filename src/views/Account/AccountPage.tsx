@@ -118,8 +118,9 @@ const AccountPage: React.FunctionComponent = () => {
                         onClick={handleCreateAccount}
                         type="primary"
                         icon={<PlusOutlined /> }
-                        children="Tạo tài khoản"
-                    />
+                    >
+                        Tạo tài khoản
+                    </Button>
                 ]}
                 pagination={{
                     defaultPageSize: 10,
@@ -131,7 +132,11 @@ const AccountPage: React.FunctionComponent = () => {
                     setting: false
                 }}
             />
-            <ModalConfigAccount open={open} setOpen={setOpen} action={dataModel.action} data={dataModel?.data} />
+            <ModalConfigAccount open={open}
+                setOpen={setOpen}
+                action={dataModel.action}
+                data={dataModel?.data}
+            />
         </>
     );
 };

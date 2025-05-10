@@ -3,6 +3,7 @@ import MainLayout from "@/components/MainLayout/MainLayout.tsx";
 import ProtectedRoute from "@/routes/ProtectedRoute.tsx";
 import { lazy } from "react";
 import useAxiosInterceptor from "@/hooks/useAxiosInterceptor";
+import DashboardPage from "@/views/Dashboard/DashboardPage";
 
 // Page
 const ProviderPage = lazy(() => import("@/views/Provider/ProviderPage.tsx"));
@@ -36,7 +37,9 @@ const AppRoutes: React.FunctionComponent = () => {
                 <Route
                     path="/"
                     element={
-                        <ProtectedRoute children={<h1>Path /</h1>} />
+                        <ProtectedRoute >
+                            <DashboardPage />
+                        </ProtectedRoute>
                     }
                 />
                 <Route

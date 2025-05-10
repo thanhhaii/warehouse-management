@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { ChangePasswordPayload, GetAllUserRequest, GetListFilterPayload, LoginRequest } from "@/services/apiService/requestTypes.ts";
-import { GetAllUserResponse, GetListResponseBase, LoginResponse, ResponseBase } from "@/services/apiService/responseTypes.ts";
+import { GetAllUserResponse, GetListResponseBase, GetUserProfileResponse, LoginResponse, ResponseBase } from "@/services/apiService/responseTypes.ts";
 import { CreateAccountModel, UpdateAccountModel } from "@/views/Account/models/accountFormModels.ts";
 import { AccountModel } from "@/types/accountModels.ts";
 import { GetListCategoryFilter, GetListCategoryResponse } from "@/views/Category/types/categoryModels";
@@ -241,6 +241,14 @@ class ApiService implements APIServiceImpl{
                     return status === 202;
                 }
             }
+        );
+
+        return resp.data;
+    }
+
+    async getUserProfile(): Promise<GetUserProfileResponse> {
+        const resp = await this.axiosInstance.get(
+            '/user/details'
         );
 
         return resp.data;
